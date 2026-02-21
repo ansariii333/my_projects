@@ -1,0 +1,21 @@
+meme_dict = {
+"РОФЛ" : "шутка",
+"КРИПОВЫЙ" : "страшный, пугающий",
+"АГРИТЬСЯ" : "злиться"
+}
+word = input("Введите непонятное слово (большими буквами!): ")
+if word in meme_dict.keys():
+    print("слово",word,"означает:",meme_dict[word])
+
+else:
+    print("к сожалению не нашлось")
+
+
+task_dict = {
+"math":"3+4",
+"biology":"what is a cell?",
+"physics":"mass is..."
+}
+task = input("input one subject and get task")
+if task in task_dict.keys():
+    print("your subject is", task ,"and your task is",task_dict[task])
