@@ -1,0 +1,17 @@
+import random
+random_emoji=['^^','0_o',';)',"¯\_(ツ)_/¯","(￢_￢)"]
+print(random.choice(random_emoji))
+
+list = [
+    'I have a lot of hobbies,for example swimmin and basketball',
+    'I have my own cat and also we pet a dog and one more cat',
+    'I have many projects in programming',
+    'I like pasta corbanara with a lot of cheese'
+]
+print(random.choice(list))
+
+my_words = ['hi','python pro','kodland','i do not know']
+print(my_words[0])
+
+name=input()
+print("hi my name is",name)
