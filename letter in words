@@ -1,0 +1,29 @@
+name = input("Как тебя зовут?")
+age = int(input("Сколько тебе лет?"))
+
+next_year_age = age + 10
+
+print("Привет,", name, "через 10 лет тебе будет", next_year_age)
+
+
+word = input("Введи слово...")
+bukvi ="аеёиоуыэюя"
+count = 0
+for letter in word:
+    if letter in bukvi:
+        count+=1
+print("Гласные буквы:",count)
+
+
+x = 5
+x = x + 2
+x *= 3
+print(x)
+
+word = input("Enter a random word...")
+b = "a"
+for letter in word:
+    if letter in b:
+        count +=1
+        print("The word has",count,"a")
+    
