@@ -1,0 +1,1380 @@
+<!doctype html>
+<html lang="ru" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenLoop - Экологическая платформа</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet">
+  <style>
+
+
+    * { font-family: 'Nunito', sans-serif; }
+    
+    .gradient-eco { background: linear-gradient(135deg, #0d9488 0%, #059669 50%, #16a34a 100%); }
+    .gradient-dark { background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%); }
+    .glass { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+    .glass-dark { background: rgba(15,23,42,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    
+    .nav-item { transition: all 0.3s ease; }
+    .nav-item:hover { transform: translateY(-2px); }
+    .nav-item.active { background: linear-gradient(135deg, #14b8a6, #10b981); box-shadow: 0 4px 15px rgba(20,184,166,0.4); }
+    
+    .card-hover { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-hover:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+    
+    .pulse-eco { animation: pulseEco 2s infinite; }
+    @keyframes pulseEco {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(20,184,166,0.4); }
+      50% { box-shadow: 0 0 0 15px rgba(20,184,166,0); }
+    }
+    
+    .float { animation: float 3s ease-in-out infinite; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .typing-indicator span { animation: typing 1.4s infinite; }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
+    
+    .progress-ring { transition: stroke-dashoffset 0.5s ease; }
+    
+    .map-marker { animation: bounce 1s infinite; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .form-container {
+    width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 12px;
+    background: #f3f4f6;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 14px;
+    background: #22c55e;
+    color: white;
+    cursor: pointer;
+    margin-bottom:40px;
+
+}
+
+.btn:hover {
+    background: #16a34a;
+}
+
+.hidden-field {
+    display: none;
+}
+
+
+form {
+    display: none;
+}
+
+form.active {
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+}
+
+input:focus {
+    border-color: #16a34a;
+}
+
+button.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background: #16a34a;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 40px;
+}
+
+button.submit-btn:hover {
+    background: #15803d;
+}
+
+.welcome {
+    display: none;
+    font-weight: bold;
+    color: #16a34a;
+    margin-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+    
+    .badge-shine { position: relative; overflow: hidden; }
+    .badge-shine::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: rotate(45deg);
+      animation: shine 3s infinite;
+    }
+    @keyframes shine {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+    
+    .chat-bubble { animation: slideIn 0.3s ease; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #14b8a6; border-radius: 4px; }
+    
+    .stat-card { background: linear-gradient(145deg, #1e293b, #0f172a); }
+    
+    .level-progress { background: conic-gradient(#14b8a6 var(--progress), #334155 0deg); }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full overflow-auto gradient-dark text-white"><!-- Навигация -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-dark">
+   <div class="max-w-7xl mx-auto px-4 py-3">
+    <div class="flex items-center justify-between">
+     <div class="flex items-center gap-3">
+      <div class="w-10 h-10 gradient-eco rounded-xl flex items-center justify-center pulse-eco"><span class="text-2xl">🌍</span>
+      </div><h1 id="site-title" class="text-xl font-bold bg-gradient-to-r from-teal-400 to-green-400 bg-clip-text text-transparent">GreenLoop</h1>
+     </div>
+     <div class="hidden md:flex items-center gap-2"><button onclick="showSection('home')" class="nav-item active px-4 py-2 rounded-xl text-sm font-semibold" data-section="home"> Главная</button> <button onclick="showSection('map')" class="nav-item px-4 py-2 rounded-xl text-sm font-semibold" data-section="map"> Карта</button> <button onclick="showSection('challenges')" class="nav-item px-4 py-2 rounded-xl text-sm font-semibold" data-section="challenges"> Челленджи</button> <button onclick="showSection('rating')" class="nav-item px-4 py-2 rounded-xl text-sm font-semibold" data-section="rating"> Рейтинг</button> <button onclick="showSection('chat')" class="nav-item px-4 py-2 rounded-xl text-sm font-semibold" data-section="chat"> Чат</button> <button onclick="showSection('profile')" class="nav-item px-4 py-2 rounded-xl text-sm font-semibold" data-section="profile"> Профиль</button>
+     </div>
+     <div class="flex items-center gap-3">
+      <div class="hidden sm:flex items-center gap-2 glass px-3 py-1.5 rounded-full"><span class="text-yellow-400">⚡</span> <span id="user-points" class="font-bold text-teal-400">0</span>
+      </div><button onclick="toggleAI()" class="w-10 h-10 gradient-eco rounded-full flex items-center justify-center hover:scale-110 transition-transform pulse-eco"> <span class="text-xl">🤖</span> </button>
+     </div>
+    </div><!-- Мобильная навигация -->
+    <div class="flex md:hidden items-center gap-1 mt-3 overflow-x-auto pb-2"><button onclick="showSection('home')" class="nav-item active px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" data-section="home">🏠</button> <button onclick="showSection('map')" class="nav-item px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" data-section="map">🗺️</button> <button onclick="showSection('challenges')" class="nav-item px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" data-section="challenges">🎯</button> <button onclick="showSection('rating')" class="nav-item px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" data-section="rating">🏆</button> <button onclick="showSection('chat')" class="nav-item px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" data-section="chat">💬</button> <button onclick="showSection('profile')" class="nav-item px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" data-section="profile">👤</button>
+    </div>
+   </div>
+  </nav><!-- Главный контент -->
+  <main class="pt-28 md:pt-20 pb-8 px-4 max-w-7xl mx-auto"><!-- Секция: Главная -->
+   <section id="section-home" class="section-content"><!-- Hero -->
+    <div class="relative rounded-3xl overflow-hidden mb-8 gradient-eco p-8 md:p-12">
+     <div class="absolute inset-0 opacity-20">
+      <div class="absolute top-10 left-10 text-6xl float">
+       🌱
+      </div>
+      <div class="absolute top-20 right-20 text-5xl float" style="animation-delay: 0.5s">
+       🌿
+      </div>
+      <div class="absolute bottom-10 left-1/4 text-4xl float" style="animation-delay: 1s">
+       🍃
+      </div>
+      <div class="absolute bottom-20 right-1/3 text-5xl float" style="animation-delay: 1.5s">
+       🌳
+      </div>
+     </div>
+     <div class="relative z-10 text-center">
+      <h1 id="hero-title" class="text-3xl md:text-5xl font-black mb-4">Спасём планету вместе! 🌍</h1>
+      <p id="hero-subtitle" class="text-lg md:text-xl opacity-90 mb-8">Присоединяйся к экологическому движению. Выполняй задания, зарабатывай баллы и меняй мир!</p>
+      <div class="flex flex-wrap justify-center gap-4"><button onclick="showSection('challenges')" class="px-8 py-3 bg-white text-teal-600 rounded-full font-bold hover:scale-105 transition-transform shadow-lg"> 🚀 Начать миссию </button> <button onclick="showSection('map')" class="px-8 py-3 glass rounded-full font-bold hover:scale-105 transition-transform"> 🗺️ Открыть карту </button>
+      <a href="https://hacka1.vercel.app/" target="_blank" 
+     class="px-8 py-3 bg-teal-500 text-white rounded-full font-bold hover:bg-teal-600 hover:scale-105 transition-transform shadow-lg">
+    Перейти на GreenLoop
+  </a>
+</div>
+
+
+
+<div class="container">
+
+    <!-- Вход -->
+    <form id="loginForm" class="form active">
+        <h2 style="margin-top: auto;">Вход</h2>
+        <div class="form-group">
+            <input type="email" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+            <input type="password" placeholder="Пароль" required>
+        </div>
+        <button type="submit">Войти</button>
+        <div class="switch">
+            Нет аккаунта? <span onclick="toggleForm()">Регистрация</span>
+        </div>
+    </form>
+
+    <!-- Регистрация -->
+    <form id="registerForm" class="form">
+        <h2>Регистрация</h2>
+        <div class="form-group">
+            <input type="text" placeholder="Имя" required>
+        </div>
+        <div class="form-group">
+            <input type="email" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+            <input type="password" placeholder="Пароль" required>
+        </div>
+        <button type="submit">Зарегистрироваться</button>
+        <div class="switch">
+            Уже есть аккаунт? <span onclick="toggleForm()">Войти</span>
+        </div>
+    </form>
+
+</div>
+
+<script>
+function toggleForm(){
+    document.getElementById("loginForm").classList.toggle("active");
+    document.getElementById("registerForm").classList.toggle("active");
+}
+</script>
+
+
+
+
+
+      </div>
+     </div>
+    </div><!-- Статистика -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+     <div class="stat-card rounded-2xl p-4 text-center card-hover">
+      <div class="text-3xl mb-2">
+       🌳
+      </div>
+      <div class="text-2xl font-bold text-green-400">
+       12,847
+      </div>
+      <div class="text-xs text-slate-400">
+       Деревьев посажено
+      </div>
+     </div>
+     <div class="stat-card rounded-2xl p-4 text-center card-hover">
+      <div class="text-3xl mb-2">
+       ♻️
+      </div>
+      <div class="text-2xl font-bold text-blue-400">
+       45.2т
+      </div>
+      <div class="text-xs text-slate-400">
+       Отходов переработано
+      </div>
+     </div>
+     <div class="stat-card rounded-2xl p-4 text-center card-hover">
+      <div class="text-3xl mb-2">
+       👥
+      </div>
+      <div class="text-2xl font-bold text-purple-400">
+       8,932
+      </div>
+      <div class="text-xs text-slate-400">
+       Участников
+      </div>
+     </div>
+     <div class="stat-card rounded-2xl p-4 text-center card-hover">
+      <div class="text-3xl mb-2">
+       🏆
+      </div>
+      <div class="text-2xl font-bold text-yellow-400">
+       156
+      </div>
+      <div class="text-xs text-slate-400">
+       Акций проведено
+      </div>
+     </div>
+    </div><!-- Быстрые действия -->
+    <h2 class="text-2xl font-bold mb-4">⚡ Быстрые действия</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"><button onclick="reportPollution()" class="stat-card rounded-2xl p-6 text-left card-hover group">
+      <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">
+       📍
+      </div><h3 class="font-bold text-lg mb-2">Сообщить о загрязнении</h3><p class="text-sm text-slate-400">Отметьте место загрязнения на карте</p>
+      <div class="mt-3 text-teal-400 text-sm font-semibold">
+       +50 баллов →
+      </div></button> <button onclick="showSection('challenges')" class="stat-card rounded-2xl p-6 text-left card-hover group">
+      <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">
+       🎯
+      </div><h3 class="font-bold text-lg mb-2">Ежедневное задание</h3><p class="text-sm text-slate-400">Собери 10 единиц пластика</p>
+      <div class="mt-3">
+       <div class="w-full bg-slate-700 rounded-full h-2">
+        <div class="gradient-eco h-2 rounded-full" style="width: 60%"></div>
+       </div>
+       <div class="text-xs text-slate-400 mt-1">
+        6/10 выполнено
+       </div>
+      </div></button> <button onclick="toggleAI()" class="stat-card rounded-2xl p-6 text-left card-hover group">
+      <div class="text-4xl mb-3 group-hover:scale-110 transition-transform">
+       🤖
+      </div><h3 class="font-bold text-lg mb-2">ЭкоАссистент</h3><p class="text-sm text-slate-400">Спросите совет по экологии</p>
+      <div class="mt-3 text-teal-400 text-sm font-semibold">
+       Открыть чат →
+      </div></button>
+    </div><!-- Лента активности -->
+    <h2 class="text-2xl font-bold mb-4">📰 Лента активности</h2>
+    <div class="space-y-3" id="activity-feed">
+     <div class="glass rounded-xl p-4 flex items-center gap-4 card-hover">
+      <div class="w-12 h-12 rounded-full gradient-eco flex items-center justify-center text-xl">
+       А
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Алексей завершил челлендж "Эко-неделя"</p>
+       <p class="text-xs text-slate-400">2 минуты назад • +500 баллов</p>
+      </div><span class="text-2xl">🏆</span>
+     </div>
+     <div class="glass rounded-xl p-4 flex items-center gap-4 card-hover">
+      <div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center text-xl">
+       М
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Мария отметила загрязнение в парке</p>
+       <p class="text-xs text-slate-400">15 минут назад • +50 баллов</p>
+      </div><span class="text-2xl">📍</span>
+     </div>
+     <div class="glass rounded-xl p-4 flex items-center gap-4 card-hover">
+      <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-xl">
+       И
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Иван посадил 3 дерева</p>
+       <p class="text-xs text-slate-400">1 час назад • +150 баллов</p>
+      </div><span class="text-2xl">🌳</span>
+     </div>
+    </div>
+   </section><!-- Секция: Карта загрязнений -->
+   <section id="section-map" class="section-content hidden">
+    <div class="flex items-center justify-between mb-6">
+     <h2 class="text-2xl font-bold">🗺️ Карта загрязнений</h2><button onclick="reportPollution()" class="px-4 py-2 gradient-eco rounded-xl font-semibold hover:scale-105 transition-transform"> + Добавить точку </button>
+    </div><!-- Интерактивная карта -->
+    <div class="relative rounded-3xl overflow-hidden mb-6" style="height: 400px;">
+     <div id="eco-map" class="w-full h-full bg-slate-800 relative"><!-- SVG Карта -->
+      <svg viewbox="0 0 800 400" class="w-full h-full"><defs>
+        <lineargradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+         <stop offset="0%" style="stop-color:#1e293b" />
+         <stop offset="100%" style="stop-color:#0f172a" />
+        </lineargradient>
+        <filter id="glow">
+         <fegaussianblur stddeviation="3" result="coloredBlur" />
+         <femerge>
+          <femergenode in="coloredBlur" />
+          <femergenode in="SourceGraphic" />
+         </femerge>
+        </filter>
+       </defs> <!-- Фон карты --> <rect width="800" height="400" fill="url(#mapGrad)" /> <!-- Сетка --> <g stroke="#334155" stroke-width="0.5" opacity="0.5">
+        <line x1="0" y1="100" x2="800" y2="100" />
+        <line x1="0" y1="200" x2="800" y2="200" />
+        <line x1="0" y1="300" x2="800" y2="300" />
+        <line x1="200" y1="0" x2="200" y2="400" />
+        <line x1="400" y1="0" x2="400" y2="400" />
+        <line x1="600" y1="0" x2="600" y2="400" />
+       </g> <!-- Зоны --> <ellipse cx="200" cy="150" rx="80" ry="60" fill="#14b8a6" opacity="0.2" /> <ellipse cx="500" cy="250" rx="100" ry="70" fill="#14b8a6" opacity="0.15" /> <ellipse cx="650" cy="120" rx="60" ry="40" fill="#f59e0b" opacity="0.2" /> <!-- Дороги --> <path d="M0,200 Q200,180 400,200 T800,180" stroke="#475569" stroke-width="4" fill="none" /> <path d="M400,0 Q380,200 400,400" stroke="#475569" stroke-width="3" fill="none" /> <!-- Парки --> <rect x="150" y="100" width="100" height="100" rx="10" fill="#22c55e" opacity="0.3" /> <rect x="450" y="200" width="120" height="100" rx="10" fill="#22c55e" opacity="0.3" /> <!-- Точки загрязнения --> <g id="pollution-markers">
+        <g class="map-marker" transform="translate(180, 130)">
+         <circle r="15" fill="#ef4444" opacity="0.3" />
+         <circle r="8" fill="#ef4444" filter="url(#glow)" />
+         <text y="4" text-anchor="middle" fill="white" font-size="10">
+          🗑️
+         </text>
+        </g>
+        <g class="map-marker" transform="translate(350, 220)">
+         <circle r="12" fill="#f59e0b" opacity="0.3" />
+         <circle r="6" fill="#f59e0b" filter="url(#glow)" />
+         <text y="3" text-anchor="middle" fill="white" font-size="8">
+          ⚠️
+         </text>
+        </g>
+        <g class="map-marker" transform="translate(520, 280)">
+         <circle r="18" fill="#ef4444" opacity="0.3" />
+         <circle r="10" fill="#ef4444" filter="url(#glow)" />
+         <text y="4" text-anchor="middle" fill="white" font-size="12">
+          ☢️
+         </text>
+        </g>
+        <g class="map-marker" transform="translate(650, 150)">
+         <circle r="10" fill="#22c55e" opacity="0.3" />
+         <circle r="5" fill="#22c55e" filter="url(#glow)" />
+         <text y="3" text-anchor="middle" fill="white" font-size="8">
+          ✓
+         </text>
+        </g>
+       </g> <!-- Маршрут ИИ --> <path id="ai-route" d="M100,350 Q180,130 350,220 Q450,280 520,280" stroke="#14b8a6" stroke-width="3" fill="none" stroke-dasharray="10,5" opacity="0.8">
+        <animate attributename="stroke-dashoffset" from="0" to="30" dur="1s" repeatcount="indefinite" />
+       </path> <!-- Позиция пользователя --> <g transform="translate(100, 350)">
+        <circle r="20" fill="#14b8a6" opacity="0.2">
+         <animate attributename="r" values="15;25;15" dur="2s" repeatcount="indefinite" />
+        </circle>
+        <circle r="10" fill="#14b8a6" filter="url(#glow)" />
+        <text y="4" text-anchor="middle" fill="white" font-size="12">
+         📍
+        </text>
+       </g>
+      </svg><!-- Легенда -->
+      <div class="absolute bottom-4 left-4 glass rounded-xl p-3 text-xs">
+       <div class="flex items-center gap-2 mb-1">
+        <span class="w-3 h-3 rounded-full bg-red-500"></span> Критическое
+       </div>
+       <div class="flex items-center gap-2 mb-1">
+        <span class="w-3 h-3 rounded-full bg-yellow-500"></span> Умеренное
+       </div>
+       <div class="flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full bg-green-500"></span> Убрано
+       </div>
+      </div><!-- Кнопки управления -->
+      <div class="absolute top-4 right-4 flex flex-col gap-2"><button class="w-10 h-10 glass rounded-xl flex items-center justify-center hover:bg-teal-500/30 transition">+</button> <button class="w-10 h-10 glass rounded-xl flex items-center justify-center hover:bg-teal-500/30 transition">−</button> <button onclick="buildRoute()" class="w-10 h-10 glass rounded-xl flex items-center justify-center hover:bg-teal-500/30 transition">🧭</button>
+      </div>
+     </div>
+    </div><!-- ИИ Маршрут -->
+    <div class="glass rounded-2xl p-6 mb-6">
+     <div class="flex items-center gap-3 mb-4">
+      <div class="w-12 h-12 gradient-eco rounded-xl flex items-center justify-center text-2xl">
+       🤖
+      </div>
+      <div>
+       <h3 class="font-bold">ИИ-маршрут готов!</h3>
+       <p class="text-sm text-slate-400">Оптимальный путь для уборки 3 точек</p>
+      </div>
+     </div>
+     <div class="flex flex-wrap gap-3">
+      <div class="flex items-center gap-2 bg-slate-700 px-3 py-2 rounded-lg"><span>📍</span> <span class="text-sm">2.3 км</span>
+      </div>
+      <div class="flex items-center gap-2 bg-slate-700 px-3 py-2 rounded-lg"><span>⏱️</span> <span class="text-sm">~45 мин</span>
+      </div>
+      <div class="flex items-center gap-2 bg-slate-700 px-3 py-2 rounded-lg"><span>⚡</span> <span class="text-sm">+200 баллов</span>
+      </div>
+     </div><button onclick="startRoute()" class="w-full mt-4 py-3 gradient-eco rounded-xl font-bold hover:scale-[1.02] transition-transform"> 🚀 Начать маршрут </button>
+    </div><!-- Список точек -->
+    <h3 class="font-bold text-lg mb-3">📍 Ближайшие точки загрязнения</h3>
+    <div class="space-y-3" id="pollution-list">
+     <div class="glass rounded-xl p-4 flex items-center gap-4 card-hover cursor-pointer">
+      <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center"><span class="text-2xl">🗑️</span>
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Свалка мусора в парке</p>
+       <p class="text-xs text-slate-400">300м от вас • Критическое</p>
+      </div>
+      <div class="text-right">
+       <div class="text-teal-400 font-bold">
+        +100
+       </div>
+       <div class="text-xs text-slate-400">
+        баллов
+       </div>
+      </div>
+     </div>
+     <div class="glass rounded-xl p-4 flex items-center gap-4 card-hover cursor-pointer">
+      <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center"><span class="text-2xl">⚠️</span>
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Пластиковые отходы</p>
+       <p class="text-xs text-slate-400">850м от вас • Умеренное</p>
+      </div>
+      <div class="text-right">
+       <div class="text-teal-400 font-bold">
+        +50
+       </div>
+       <div class="text-xs text-slate-400">
+        баллов
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Секция: Челленджи -->
+   <section id="section-challenges" class="section-content hidden">
+    <h2 class="text-2xl font-bold mb-6">🎯 Челленджи и задания</h2><!-- Фильтры -->
+    <div class="flex flex-wrap gap-2 mb-6"><button class="px-4 py-2 gradient-eco rounded-full text-sm font-semibold">Все</button> <button class="px-4 py-2 glass rounded-full text-sm font-semibold hover:bg-teal-500/20 transition">Ежедневные</button> <button class="px-4 py-2 glass rounded-full text-sm font-semibold hover:bg-teal-500/20 transition">Недельные</button> <button class="px-4 py-2 glass rounded-full text-sm font-semibold hover:bg-teal-500/20 transition">Сезонные</button> <button class="px-4 py-2 glass rounded-full text-sm font-semibold hover:bg-teal-500/20 transition">Командные</button>
+    </div><!-- Активный челлендж -->
+    <div class="relative rounded-3xl overflow-hidden mb-6 gradient-eco p-6">
+     <div class="absolute top-4 right-4 bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-bold">
+      🔥 АКТИВНЫЙ
+     </div>
+     <div class="flex items-start gap-4">
+      <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-3xl">
+       🌿
+      </div>
+      <div class="flex-1">
+       <h3 class="text-xl font-bold mb-2">Эко-неделя: Нулевые отходы</h3>
+       <p class="text-sm opacity-90 mb-4">Проживи неделю без одноразового пластика и веди дневник</p>
+       <div class="flex flex-wrap gap-4 mb-4">
+        <div class="flex items-center gap-2"><span>⏱️</span> <span class="text-sm">3 дня осталось</span>
+        </div>
+        <div class="flex items-center gap-2"><span>👥</span> <span class="text-sm">847 участников</span>
+        </div>
+        <div class="flex items-center gap-2"><span>🎁</span> <span class="text-sm font-bold">500 баллов</span>
+        </div>
+       </div>
+       <div class="w-full bg-white/20 rounded-full h-3 mb-2">
+        <div class="bg-white h-3 rounded-full transition-all" style="width: 57%"></div>
+       </div>
+       <div class="flex justify-between text-xs"><span>Прогресс: 4/7 дней</span> <span>57%</span>
+       </div>
+      </div>
+     </div>
+    </div><!-- Список челленджей -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4"><!-- Ежедневный -->
+     <div class="stat-card rounded-2xl p-5 card-hover">
+      <div class="flex items-center gap-2 mb-3"><span class="px-2 py-1 bg-green-500/20 text-green-400 rounded-lg text-xs font-semibold">ЕЖЕДНЕВНЫЙ</span> <span class="text-xs text-slate-400">Обновление: 18:00</span>
+      </div>
+      <div class="flex items-start gap-3">
+       <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center text-2xl">
+        ♻️
+       </div>
+       <div class="flex-1">
+        <h4 class="font-bold mb-1">Сортировка мусора</h4>
+        <p class="text-xs text-slate-400 mb-3">Правильно рассортируйте 5 видов отходов</p>
+        <div class="flex items-center justify-between"><span class="text-teal-400 font-bold">+30 баллов</span> <button onclick="completeChallenge(1)" class="px-4 py-1.5 gradient-eco rounded-lg text-xs font-semibold hover:scale-105 transition-transform"> Выполнить </button>
+        </div>
+       </div>
+      </div>
+     </div><!-- Недельный -->
+     <div class="stat-card rounded-2xl p-5 card-hover">
+      <div class="flex items-center gap-2 mb-3"><span class="px-2 py-1 bg-blue-500/20 text-blue-400 rounded-lg text-xs font-semibold">НЕДЕЛЬНЫЙ</span> <span class="text-xs text-slate-400">5 дней осталось</span>
+      </div>
+      <div class="flex items-start gap-3">
+       <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center text-2xl">
+        🚶
+       </div>
+       <div class="flex-1">
+        <h4 class="font-bold mb-1">Эко-транспорт</h4>
+        <p class="text-xs text-slate-400 mb-3">Пройдите 50 км пешком или на велосипеде</p>
+        <div class="w-full bg-slate-700 rounded-full h-2 mb-2">
+         <div class="bg-blue-500 h-2 rounded-full" style="width: 35%"></div>
+        </div>
+        <div class="flex items-center justify-between text-xs"><span class="text-slate-400">17.5/50 км</span> <span class="text-blue-400 font-bold">+150 баллов</span>
+        </div>
+       </div>
+      </div>
+     </div><!-- Командный -->
+     <div class="stat-card rounded-2xl p-5 card-hover">
+      <div class="flex items-center gap-2 mb-3"><span class="px-2 py-1 bg-purple-500/20 text-purple-400 rounded-lg text-xs font-semibold">КОМАНДНЫЙ</span> <span class="text-xs text-slate-400">12 участников</span>
+      </div>
+      <div class="flex items-start gap-3">
+       <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center text-2xl">
+        🌳
+       </div>
+       <div class="flex-1">
+        <h4 class="font-bold mb-1">Посади лес</h4>
+        <p class="text-xs text-slate-400 mb-3">Командой посадите 100 деревьев</p>
+        <div class="w-full bg-slate-700 rounded-full h-2 mb-2">
+         <div class="bg-purple-500 h-2 rounded-full" style="width: 68%"></div>
+        </div>
+        <div class="flex items-center justify-between text-xs"><span class="text-slate-400">68/100 деревьев</span> <span class="text-purple-400 font-bold">+1000 баллов</span>
+        </div>
+       </div>
+      </div>
+     </div><!-- Сезонный -->
+     <div class="stat-card rounded-2xl p-5 card-hover relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-20 h-20 bg-yellow-500/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+      <div class="flex items-center gap-2 mb-3"><span class="px-2 py-1 bg-yellow-500/20 text-yellow-400 rounded-lg text-xs font-semibold">СЕЗОННЫЙ</span> <span class="text-xs text-slate-400">Лето 2024</span>
+      </div>
+      <div class="flex items-start gap-3">
+       <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center text-2xl">
+        🏖️
+       </div>
+       <div class="flex-1">
+        <h4 class="font-bold mb-1">Чистые пляжи</h4>
+        <p class="text-xs text-slate-400 mb-3">Уберите 10 кг мусора на пляжах</p>
+        <div class="flex items-center justify-between">
+         <div class="flex -space-x-2">
+          <div class="w-6 h-6 rounded-full bg-teal-500 border-2 border-slate-800 text-xs flex items-center justify-center">
+           А
+          </div>
+          <div class="w-6 h-6 rounded-full bg-purple-500 border-2 border-slate-800 text-xs flex items-center justify-center">
+           М
+          </div>
+          <div class="w-6 h-6 rounded-full bg-blue-500 border-2 border-slate-800 text-xs flex items-center justify-center">
+           +5
+          </div>
+         </div><span class="text-yellow-400 font-bold">+2000 баллов</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div><!-- Бонусы -->
+    <h3 class="text-xl font-bold mt-8 mb-4">🎁 Бонусы и награды</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+     <div class="glass rounded-xl p-4 text-center card-hover">
+      <div class="text-4xl mb-2">
+       🎫
+      </div>
+      <p class="text-sm font-semibold">Скидка 20%</p>
+      <p class="text-xs text-slate-400">Эко-магазин</p>
+      <p class="text-teal-400 text-xs mt-2">500 баллов</p>
+     </div>
+     <div class="glass rounded-xl p-4 text-center card-hover">
+      <div class="text-4xl mb-2">
+       🎬
+      </div>
+      <p class="text-sm font-semibold">Билет в кино</p>
+      <p class="text-xs text-slate-400">Сеть "Планета"</p>
+      <p class="text-teal-400 text-xs mt-2">1000 баллов</p>
+     </div>
+     <div class="glass rounded-xl p-4 text-center card-hover">
+      <div class="text-4xl mb-2">
+       🌱
+      </div>
+      <p class="text-sm font-semibold">Набор семян</p>
+      <p class="text-xs text-slate-400">10 видов растений</p>
+      <p class="text-teal-400 text-xs mt-2">750 баллов</p>
+     </div>
+     <div class="glass rounded-xl p-4 text-center card-hover">
+      <div class="text-4xl mb-2">
+       👕
+      </div>
+      <p class="text-sm font-semibold">Эко-мерч</p>
+      <p class="text-xs text-slate-400">Футболка EcoHero</p>
+      <p class="text-teal-400 text-xs mt-2">2000 баллов</p>
+     </div>
+    </div>
+   </section><!-- Секция: Рейтинг -->
+   <section id="section-rating" class="section-content hidden">
+    <div class="flex items-center justify-between mb-6">
+     <h2 class="text-2xl font-bold">🏆 Рейтинг участников</h2><select class="bg-slate-700 border-0 rounded-xl px-4 py-2 text-sm"> <option>Эта неделя</option> <option>Этот месяц</option> <option>Всё время</option> </select>
+    </div><!-- Топ 3 -->
+    <div class="flex items-end justify-center gap-4 mb-8"><!-- 2 место -->
+     <div class="text-center">
+      <div class="w-20 h-20 rounded-full bg-gradient-to-br from-slate-400 to-slate-500 mx-auto mb-2 flex items-center justify-center text-3xl border-4 border-slate-400 shadow-lg">
+       М
+      </div>
+      <div class="bg-slate-700 rounded-xl px-4 py-3">
+       <div class="text-2xl mb-1">
+        🥈
+       </div>
+       <p class="font-bold">Мария</p>
+       <p class="text-teal-400 font-bold">8,450</p>
+      </div>
+     </div><!-- 1 место -->
+     <div class="text-center -mt-4">
+      <div class="relative">
+       <div class="absolute -top-6 left-1/2 -translate-x-1/2 text-3xl">
+        👑
+       </div>
+       <div class="w-24 h-24 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 mx-auto mb-2 flex items-center justify-center text-4xl border-4 border-yellow-400 shadow-lg badge-shine">
+        А
+       </div>
+      </div>
+      <div class="gradient-eco rounded-xl px-6 py-4">
+       <div class="text-3xl mb-1">
+        🥇
+       </div>
+       <p class="font-bold text-lg">Алексей</p>
+       <p class="text-white font-bold text-xl">12,840</p>
+      </div>
+     </div><!-- 3 место -->
+     <div class="text-center">
+      <div class="w-20 h-20 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 mx-auto mb-2 flex items-center justify-center text-3xl border-4 border-orange-400 shadow-lg">
+       И
+      </div>
+      <div class="bg-slate-700 rounded-xl px-4 py-3">
+       <div class="text-2xl mb-1">
+        🥉
+       </div>
+       <p class="font-bold">Иван</p>
+       <p class="text-teal-400 font-bold">7,230</p>
+      </div>
+     </div>
+    </div><!-- Ваша позиция -->
+    <div class="gradient-eco rounded-2xl p-4 mb-6 flex items-center gap-4">
+     <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center font-bold text-xl"><span id="user-rank">47</span>
+     </div>
+     <div class="flex-1">
+      <p class="font-bold">Ваша позиция</p>
+      <p class="text-sm opacity-90">До 46 места: 120 баллов</p>
+     </div>
+     <div class="text-right">
+      <p class="text-2xl font-bold" id="rating-points">1,580</p>
+      <p class="text-xs opacity-75">баллов</p>
+     </div>
+    </div><!-- Список рейтинга -->
+    <div class="space-y-2">
+     <div class="glass rounded-xl p-4 flex items-center gap-4"><span class="w-8 text-center font-bold text-slate-400">4</span>
+      <div class="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center">
+       Е
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Елена</p>
+       <p class="text-xs text-slate-400">Уровень 15 • 23 бейджа</p>
+      </div><span class="text-teal-400 font-bold">6,890</span>
+     </div>
+     <div class="glass rounded-xl p-4 flex items-center gap-4"><span class="w-8 text-center font-bold text-slate-400">5</span>
+      <div class="w-10 h-10 rounded-full bg-cyan-500 flex items-center justify-center">
+       Д
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Дмитрий</p>
+       <p class="text-xs text-slate-400">Уровень 14 • 21 бейдж</p>
+      </div><span class="text-teal-400 font-bold">6,540</span>
+     </div>
+     <div class="glass rounded-xl p-4 flex items-center gap-4"><span class="w-8 text-center font-bold text-slate-400">6</span>
+      <div class="w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center">
+       О
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Ольга</p>
+       <p class="text-xs text-slate-400">Уровень 13 • 19 бейджей</p>
+      </div><span class="text-teal-400 font-bold">5,980</span>
+     </div>
+     <div class="glass rounded-xl p-4 flex items-center gap-4"><span class="w-8 text-center font-bold text-slate-400">7</span>
+      <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center">
+       С
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Сергей</p>
+       <p class="text-xs text-slate-400">Уровень 12 • 17 бейджей</p>
+      </div><span class="text-teal-400 font-bold">5,420</span>
+     </div>
+    </div><!-- Призы сезона -->
+    <h3 class="text-xl font-bold mt-8 mb-4">🎁 Призы сезона</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+     <div class="stat-card rounded-2xl p-5 text-center card-hover">
+      <div class="text-5xl mb-3">
+       🥇
+      </div>
+      <h4 class="font-bold mb-2">1 место</h4>
+      <p class="text-sm text-slate-400 mb-3">iPhone 15 Pro</p>
+      <p class="text-yellow-400 font-bold">+ 50,000 баллов</p>
+     </div>
+     <div class="stat-card rounded-2xl p-5 text-center card-hover">
+      <div class="text-5xl mb-3">
+       🥈
+      </div>
+      <h4 class="font-bold mb-2">2 место</h4>
+      <p class="text-sm text-slate-400 mb-3">Apple Watch</p>
+      <p class="text-slate-400 font-bold">+ 25,000 баллов</p>
+     </div>
+     <div class="stat-card rounded-2xl p-5 text-center card-hover">
+      <div class="text-5xl mb-3">
+       🥉
+      </div>
+      <h4 class="font-bold mb-2">3 место</h4>
+      <p class="text-sm text-slate-400 mb-3">AirPods Pro</p>
+      <p class="text-orange-400 font-bold">+ 10,000 баллов</p>
+     </div>
+    </div>
+   </section><!-- Секция: Чат -->
+   <section id="section-chat" class="section-content hidden">
+    <h2 class="text-2xl font-bold mb-6">💬 Сообщество</h2><!-- Вкладки чата -->
+    <div class="flex gap-2 mb-4"><button onclick="switchChat('general')" class="chat-tab px-4 py-2 gradient-eco rounded-xl text-sm font-semibold" data-chat="general">🌍 Общий</button> <button onclick="switchChat('local')" class="chat-tab px-4 py-2 glass rounded-xl text-sm font-semibold hover:bg-teal-500/20 transition" data-chat="local">📍 Локальный</button> <button onclick="switchChat('friends')" class="chat-tab px-4 py-2 glass rounded-xl text-sm font-semibold hover:bg-teal-500/20 transition" data-chat="friends">👥 Друзья</button>
+    </div><!-- Окно чата -->
+    <div class="glass rounded-2xl p-4 mb-4" style="height: 350px;">
+     <div class="h-full overflow-y-auto space-y-3" id="chat-messages"><!-- Входящее сообщение -->
+      <div class="flex gap-3 chat-bubble">
+       <div class="w-10 h-10 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center">
+        М
+       </div>
+       <div class="glass rounded-2xl rounded-tl-none px-4 py-2 max-w-[80%]">
+        <p class="text-xs text-purple-400 font-semibold mb-1">Мария • Уровень 18</p>
+        <p class="text-sm">Привет всем! Кто хочет завтра присоединиться к уборке парка? 🌳</p>
+        <p class="text-xs text-slate-500 mt-1">14:32</p>
+       </div>
+      </div>
+      <div class="flex gap-3 chat-bubble">
+       <div class="w-10 h-10 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center">
+        И
+       </div>
+       <div class="glass rounded-2xl rounded-tl-none px-4 py-2 max-w-[80%]">
+        <p class="text-xs text-blue-400 font-semibold mb-1">Иван • Уровень 15</p>
+        <p class="text-sm">Я за! Во сколько планируем встретиться? 🙋‍♂️</p>
+        <p class="text-xs text-slate-500 mt-1">14:35</p>
+       </div>
+      </div>
+      <div class="flex gap-3 chat-bubble">
+       <div class="w-10 h-10 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center">
+        М
+       </div>
+       <div class="glass rounded-2xl rounded-tl-none px-4 py-2 max-w-[80%]">
+        <p class="text-xs text-purple-400 font-semibold mb-1">Мария • Уровень 18</p>
+        <p class="text-sm">Давайте в 10 утра у главного входа! Не забудьте перчатки 🧤</p>
+        <p class="text-xs text-slate-500 mt-1">14:36</p>
+       </div>
+      </div><!-- Исходящее сообщение -->
+      <div class="flex gap-3 justify-end chat-bubble">
+       <div class="gradient-eco rounded-2xl rounded-tr-none px-4 py-2 max-w-[80%]">
+        <p class="text-sm">Отлично, буду! Могу взять дополнительные мешки для мусора 👍</p>
+        <p class="text-xs opacity-75 mt-1 text-right">14:40 ✓✓</p>
+       </div>
+       <div class="w-10 h-10 rounded-full gradient-eco flex-shrink-0 flex items-center justify-center">
+        Я
+       </div>
+      </div>
+      <div class="flex gap-3 chat-bubble">
+       <div class="w-10 h-10 rounded-full bg-green-500 flex-shrink-0 flex items-center justify-center">
+        А
+       </div>
+       <div class="glass rounded-2xl rounded-tl-none px-4 py-2 max-w-[80%]">
+        <p class="text-xs text-green-400 font-semibold mb-1">Алексей • Уровень 22 👑</p>
+        <p class="text-sm">Супер инициатива! За каждую уборку +100 баллов сейчас 🔥</p>
+        <p class="text-xs text-slate-500 mt-1">14:42</p>
+       </div>
+      </div>
+     </div>
+    </div><!-- Форма отправки -->
+    <div class="flex gap-3"><input type="text" id="chat-input" placeholder="Напишите сообщение..." class="flex-1 bg-slate-700 border-0 rounded-xl px-4 py-3 focus:ring-2 focus:ring-teal-500 outline-none"> <button onclick="sendChatMessage()" class="px-6 py-3 gradient-eco rounded-xl font-semibold hover:scale-105 transition-transform"> 📤 </button>
+    </div><!-- Онлайн участники -->
+    <h3 class="text-lg font-bold mt-6 mb-3">👥 Онлайн сейчас</h3>
+    <div class="flex flex-wrap gap-3">
+     <div class="glass rounded-xl px-4 py-2 flex items-center gap-2">
+      <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div><span class="text-sm">Мария</span>
+     </div>
+     <div class="glass rounded-xl px-4 py-2 flex items-center gap-2">
+      <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div><span class="text-sm">Иван</span>
+     </div>
+     <div class="glass rounded-xl px-4 py-2 flex items-center gap-2">
+      <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div><span class="text-sm">Алексей</span>
+     </div>
+     <div class="glass rounded-xl px-4 py-2 flex items-center gap-2">
+      <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div><span class="text-sm">+234 участника</span>
+     </div>
+    </div>
+   </section><!-- Секция: Профиль -->
+   <section id="section-profile" class="section-content hidden">
+    <h2 class="text-2xl font-bold mb-6">👤 Мой профиль</h2><!-- Карточка профиля -->
+    <div class="glass rounded-3xl p-6 mb-6">
+     <div class="flex flex-col md:flex-row items-center gap-6">
+      <div class="relative">
+       <div class="w-28 h-28 rounded-full gradient-eco flex items-center justify-center text-5xl border-4 border-teal-400 badge-shine">
+        🌍
+       </div>
+       <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center text-lg border-4 border-slate-800">
+        12
+       </div>
+      </div>
+      <div class="flex-1 text-center md:text-left">
+       <h3 class="text-2xl font-bold mb-1" id="profile-name">ЭкоГерой</h3>
+       <p class="text-teal-400 mb-3">@ecohero_user • С нами с января 2024</p>
+       <div class="flex flex-wrap justify-center md:justify-start gap-4">
+        <div class="text-center">
+         <p class="text-2xl font-bold" id="profile-points">1,580</p>
+         <p class="text-xs text-slate-400">Баллов</p>
+        </div>
+        <div class="text-center">
+         <p class="text-2xl font-bold">47</p>
+         <p class="text-xs text-slate-400">Рейтинг</p>
+        </div>
+        <div class="text-center">
+         <p class="text-2xl font-bold">23</p>
+         <p class="text-xs text-slate-400">Челленджей</p>
+        </div>
+        <div class="text-center">
+         <p class="text-2xl font-bold">156</p>
+         <p class="text-xs text-slate-400">Друзей</p>
+        </div>
+       </div>
+      </div><button id="edit_profile" class="px-6 py-2 glass rounded-xl font-semibold hover:bg-teal-500/20 transition"> ✏️ Редактировать </button>
+     </div><!-- Прогресс уровня -->
+     <div class="mt-6 pt-6 border-t border-white/10">
+      <div class="flex items-center justify-between mb-2"><span class="text-sm">Уровень 12</span> <span class="text-sm text-slate-400">420 / 1000 до уровня 13</span>
+      </div>
+      <div class="w-full bg-slate-700 rounded-full h-3">
+       <div class="gradient-eco h-3 rounded-full transition-all" style="width: 42%"></div>
+      </div>
+     </div>
+    </div><!-- Достижения -->
+    <h3 class="text-xl font-bold mb-4">🏅 Достижения</h3>
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-3 mb-6">
+     <div class="stat-card rounded-xl p-3 text-center card-hover badge-shine">
+      <div class="text-3xl mb-1">
+       🌱
+      </div>
+      <p class="text-xs">Первый шаг</p>
+     </div>
+     <div class="stat-card rounded-xl p-3 text-center card-hover badge-shine">
+      <div class="text-3xl mb-1">
+       🌳
+      </div>
+      <p class="text-xs">Садовник</p>
+     </div>
+     <div class="stat-card rounded-xl p-3 text-center card-hover badge-shine">
+      <div class="text-3xl mb-1">
+       ♻️
+      </div>
+      <p class="text-xs">Сортировщик</p>
+     </div>
+     <div class="stat-card rounded-xl p-3 text-center card-hover badge-shine">
+      <div class="text-3xl mb-1">
+       🏃
+      </div>
+      <p class="text-xs">Марафонец</p>
+     </div>
+     <div class="stat-card rounded-xl p-3 text-center card-hover badge-shine">
+      <div class="text-3xl mb-1">
+       👥
+      </div>
+      <p class="text-xs">Лидер</p>
+     </div>
+     <div class="stat-card rounded-xl p-3 text-center card-hover opacity-40">
+      <div class="text-3xl mb-1">
+       🔒
+      </div>
+      <p class="text-xs">Скоро</p>
+     </div>
+    </div><!-- Статистика -->
+    <h3 class="text-xl font-bold mb-4">📊 Моя статистика</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+     <div class="stat-card rounded-xl p-4 text-center">
+      <div class="text-3xl mb-2">
+       🗑️
+      </div>
+      <p class="text-xl font-bold text-green-400">45 кг</p>
+      <p class="text-xs text-slate-400">Мусора собрано</p>
+     </div>
+     <div class="stat-card rounded-xl p-4 text-center">
+      <div class="text-3xl mb-2">
+       🌳
+      </div>
+      <p class="text-xl font-bold text-green-400">12</p>
+      <p class="text-xs text-slate-400">Деревьев посажено</p>
+     </div>
+     <div class="stat-card rounded-xl p-4 text-center">
+      <div class="text-3xl mb-2">
+       🚶
+      </div>
+      <p class="text-xl font-bold text-blue-400">234 км</p>
+      <p class="text-xs text-slate-400">Пройдено пешком</p>
+     </div>
+     <div class="stat-card rounded-xl p-4 text-center">
+      <div class="text-3xl mb-2">
+       📍
+      </div>
+      <p class="text-xl font-bold text-red-400">18</p>
+      <p class="text-xs text-slate-400">Точек отмечено</p>
+     </div>
+    </div><!-- Друзья -->
+    <h3 class="text-xl font-bold mb-4">👥 Мои друзья</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+     <div class="glass rounded-xl p-4 flex items-center gap-3 card-hover">
+      <div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center text-xl">
+       М
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Мария</p>
+       <p class="text-xs text-slate-400">Уровень 18 • 8,450 баллов</p>
+      </div><button class="px-3 py-1 glass rounded-lg text-xs hover:bg-teal-500/20 transition">💬</button>
+     </div>
+     <div class="glass rounded-xl p-4 flex items-center gap-3 card-hover">
+      <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-xl">
+       И
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Иван</p>
+       <p class="text-xs text-slate-400">Уровень 15 • 7,230 баллов</p>
+      </div><button class="px-3 py-1 glass rounded-lg text-xs hover:bg-teal-500/20 transition">💬</button>
+     </div>
+     <div class="glass rounded-xl p-4 flex items-center gap-3 card-hover">
+      <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-xl">
+       А
+      </div>
+      <div class="flex-1">
+       <p class="font-semibold">Алексей</p>
+       <p class="text-xs text-slate-400">Уровень 22 • 12,840 баллов</p>
+      </div><button class="px-3 py-1 glass rounded-lg text-xs hover:bg-teal-500/20 transition">💬</button>
+     </div><button class="glass rounded-xl p-4 flex items-center justify-center gap-2 hover:bg-teal-500/20 transition text-teal-400"> <span>+</span> <span>Найти друзей</span> </button>
+    </div>
+   </section>
+  </main><!-- ИИ Ассистент -->
+  <div id="ai-panel" class="fixed bottom-0 right-0 w-full md:w-96 h-[500px] glass-dark rounded-t-3xl md:rounded-tl-3xl transform translate-y-full transition-transform duration-300 z-50">
+   <div class="p-4 border-b border-white/10 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+     <div class="w-10 h-10 gradient-eco rounded-xl flex items-center justify-center text-xl pulse-eco">
+      🤖
+     </div>
+     <div>
+      <h3 class="font-bold">ЭкоАссистент</h3>
+      <p class="text-xs text-green-400">● Онлайн</p>
+     </div>
+    </div><button onclick="toggleAI()" class="w-8 h-8 rounded-lg hover:bg-slate-700 flex items-center justify-center transition">✕</button>
+   </div>
+   <div class="h-[350px] overflow-y-auto p-4 space-y-3" id="ai-messages">
+    <div class="flex gap-3">
+     <div class="w-8 h-8 gradient-eco rounded-lg flex-shrink-0 flex items-center justify-center text-sm">
+      🤖
+     </div>
+     <div class="glass rounded-2xl rounded-tl-none px-4 py-2 max-w-[85%]">
+      <p class="text-sm">Привет! Я ЭкоАссистент 🌿 Могу помочь с:</p>
+      <ul class="text-sm mt-2 space-y-1">
+       <li>• Советами по экологии</li>
+       <li>• Поиском точек загрязнения</li>
+       <li>• Построением маршрутов</li>
+       <li>• Информацией о челленджах</li>
+      </ul>
+     </div>
+    </div>
+   </div>
+   <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
+    <div class="flex gap-2"><input type="text" id="ai-input" placeholder="Спросите что-нибудь..." class="flex-1 bg-slate-700 border-0 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-teal-500 outline-none" onkeypress="if(event.key==='Enter')sendAIMessage()"> <button onclick="sendAIMessage()" class="px-4 py-2 gradient-eco rounded-xl font-semibold hover:scale-105 transition-transform"> 📤 </button>
+    </div>
+   </div>
+  </div><!-- Модальное окно сообщения о загрязнении -->
+  <div id="report-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+   <div class="glass-dark rounded-3xl p-6 w-full max-w-md">
+    <div class="flex items-center justify-between mb-6">
+     <h3 class="text-xl font-bold">📍 Сообщить о загрязнении</h3><button onclick="closeReportModal()" class="w-8 h-8 rounded-lg hover:bg-slate-700 flex items-center justify-center transition">✕</button>
+    </div>
+    <div class="space-y-4">
+     <div><label class="block text-sm font-semibold mb-2">Тип загрязнения</label> <select id="report-type" class="w-full bg-slate-700 border-0 rounded-xl px-4 py-3"> <option value="trash">🗑️ Мусор</option> <option value="plastic">♻️ Пластик</option> <option value="chemical">☢️ Химические отходы</option> <option value="other">⚠️ Другое</option> </select>
+     </div>
+     <div><label class="block text-sm font-semibold mb-2">Описание</label> <textarea id="report-desc" rows="3" placeholder="Опишите проблему..." class="w-full bg-slate-700 border-0 rounded-xl px-4 py-3 resize-none"></textarea>
+     </div>
+     <div class="glass rounded-xl p-4">
+      <div class="flex items-center gap-2 text-sm text-slate-400 mb-2"><span>📍</span> <span>Местоположение определено</span>
+      </div>
+      <p class="text-sm">ул. Зелёная, 15 (приблизительно)</p>
+     </div><button onclick="submitReport()" class="w-full py-3 gradient-eco rounded-xl font-bold hover:scale-[1.02] transition-transform"> ✓ Отправить отчёт (+50 баллов) </button>
+    </div>
+   </div>
+  </div><!-- Toast уведомления -->
+  <div id="toast-container" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 z-50 space-y-2"></div>
+  <script>
+    // Конфигурация по умолчанию
+    const defaultConfig = {
+      site_title: 'GreenLoop',
+      hero_title: 'Спасём планету вместе! 🌍',
+      hero_subtitle: 'Присоединяйся к экологическому движению. Выполняй задания, зарабатывай баллы и меняй мир!',
+      primary_color: '#0d9488',
+      secondary_color: '#059669',
+      accent_color: '#14b8a6',
+      text_color: '#ffffff',
+      background_color: '#0f172a'
+    };
+
+    let config = { ...defaultConfig };
+    let userData = [];
+    let userProfile = {
+      points: 1580,
+      level: 12,
+      rank: 47
+    };
+
+    // Инициализация Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (newConfig) => {
+          config = { ...defaultConfig, ...newConfig };
+          updateUI();
+        },
+        mapToCapabilities: (cfg) => ({
+          recolorables: [
+            {
+              get: () => cfg.primary_color || defaultConfig.primary_color,
+              set: (v) => { cfg.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); }
+            },
+            {
+              get: () => cfg.background_color || defaultConfig.background_color,
+              set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ['site_title', cfg.site_title || defaultConfig.site_title],
+          ['hero_title', cfg.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', cfg.hero_subtitle || defaultConfig.hero_subtitle]
+        ])
+      });
+    }
+
+    // Инициализация Data SDK
+    const dataHandler = {
+      onDataChanged(data) {
+        userData = data;
+        renderUserData();
+      }
+    };
+
+    async function initDataSDK() {
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init(dataHandler);
+        if (!result.isOk) {
+          console.error('Data SDK init failed');
+        }
+      }
+    }
+
+    initDataSDK();
+
+    // Обновление UI
+    function updateUI() {
+      const siteTitle = document.getElementById('site-title');
+      const heroTitle = document.getElementById('hero-title');
+      const heroSubtitle = document.getElementById('hero-subtitle');
+      
+      if (siteTitle) siteTitle.textContent = config.site_title || defaultConfig.site_title;
+      if (heroTitle) heroTitle.textContent = config.hero_title || defaultConfig.hero_title;
+      if (heroSubtitle) heroSubtitle.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+      
+      document.body.style.setProperty('--primary-color', config.primary_color || defaultConfig.primary_color);
+    }
+
+    function renderUserData() {
+      const pointsDisplay = document.getElementById('user-points');
+      const profilePoints = document.getElementById('profile-points');
+      const ratingPoints = document.getElementById('rating-points');
+      
+      if (pointsDisplay) pointsDisplay.textContent = userProfile.points.toLocaleString();
+      if (profilePoints) profilePoints.textContent = userProfile.points.toLocaleString();
+      if (ratingPoints) ratingPoints.textContent = userProfile.points.toLocaleString();
+    }
+
+    // Навигация
+    function showSection(sectionName) {
+      document.querySelectorAll('.section-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      
+      const section = document.getElementById(`section-${sectionName}`);
+      if (section) section.classList.remove('hidden');
+      
+      document.querySelectorAll(`[data-section="${sectionName}"]`).forEach(el => el.classList.add('active'));
+    }
+
+    // ИИ Ассистент
+    let aiOpen = false;
+    function toggleAI() {
+      const panel = document.getElementById('ai-panel');
+      aiOpen = !aiOpen;
+      panel.style.transform = aiOpen ? 'translateY(0)' : 'translateY(100%)';
+    }
+
+    function sendAIMessage() {
+      const input = document.getElementById('ai-input');
+      const messages = document.getElementById('ai-messages');
+      const text = input.value.trim();
+      
+      if (!text) return;
+      
+      // Сообщение пользователя
+      messages.innerHTML += `
+        <div class="flex gap-3 justify-end chat-bubble">
+          <div class="gradient-eco rounded-2xl rounded-tr-none px-4 py-2 max-w-[85%]">
+            <p class="text-sm">${text}</p>
+          </div>
+        </div>
+      `;
+      
+      input.value = '';
+      
+      // Индикатор набора
+      messages.innerHTML += `
+        <div class="flex gap-3 typing-msg">
+          <div class="w-8 h-8 gradient-eco rounded-lg flex-shrink-0 flex items-center justify-center text-sm">🤖</div>
+          <div class="glass rounded-2xl rounded-tl-none px-4 py-2">
+            <div class="typing-indicator flex gap-1">
+              <span class="w-2 h-2 bg-teal-400 rounded-full"></span>
+              <span class="w-2 h-2 bg-teal-400 rounded-full"></span>
+              <span class="w-2 h-2 bg-teal-400 rounded-full"></span>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      messages.scrollTop = messages.scrollHeight;
+      
+      // Ответ ИИ
+      setTimeout(() => {
+        const typingMsg = messages.querySelector('.typing-msg');
+        if (typingMsg) typingMsg.remove();
+        
+        const responses = [
+          'Отличный вопрос! 🌿 Для сортировки мусора используйте разные контейнеры: синий для бумаги, жёлтый для пластика, зелёный для стекла.',
+          'Я нашёл 3 точки загрязнения рядом с вами! 📍 Ближайшая в 300м. Хотите построить маршрут?',
+          'Сейчас активен челлендж "Эко-неделя"! 🎯 За выполнение вы получите 500 баллов и особый бейдж.',
+          'Совет дня: замените пластиковые пакеты на тканевые сумки. Это сократит ваш пластиковый след на 70%! ♻️',
+          'Вы уже на 47 месте в рейтинге! 🏆 Ещё 120 баллов до следующей позиции. Продолжайте в том же духе!'
+        ];
+        
+        const response = responses[Math.floor(Math.random() * responses.length)];
+        
+        messages.innerHTML += `
+          <div class="flex gap-3 chat-bubble">
+            <div class="w-8 h-8 gradient-eco rounded-lg flex-shrink-0 flex items-center justify-center text-sm">🤖</div>
+            <div class="glass rounded-2xl rounded-tl-none px-4 py-2 max-w-[85%]">
+              <p class="text-sm">${response}</p>
+            </div>
+          </div>
+        `;
+        
+        messages.scrollTop = messages.scrollHeight;
+      }, 1500);
+    }
+
+    // Чат сообщества
+    function switchChat(chatType) {
+      document.querySelectorAll('.chat-tab').forEach(el => {
+        el.classList.remove('gradient-eco');
+        el.classList.add('glass');
+      });
+      document.querySelector(`[data-chat="${chatType}"]`).classList.add('gradient-eco');
+      document.querySelector(`[data-chat="${chatType}"]`).classList.remove('glass');
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const messages = document.getElementById('chat-messages');
+      const text = input.value.trim();
+      
+      if (!text) return;
+      
+      const now = new Date();
+      const time = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+      
+      messages.innerHTML += `
+        <div class="flex gap-3 justify-end chat-bubble">
+          <div class="gradient-eco rounded-2xl rounded-tr-none px-4 py-2 max-w-[80%]">
+            <p class="text-sm">${text}</p>
+            <p class="text-xs opacity-75 mt-1 text-right">${time} ✓✓</p>
+          </div>
+          <div class="w-10 h-10 rounded-full gradient-eco flex-shrink-0 flex items-center justify-center">Я</div>
+        </div>
+      `;
+      
+      input.value = '';
+      messages.scrollTop = messages.scrollHeight;
+      
+      // Сохраняем в Data SDK
+      if (window.dataSdk && userData.length < 999) {
+        window.dataSdk.create({
+          type: 'chat_message',
+          userId: 'current_user',
+          chatMessage: text,
+          timestamp: new Date().toISOString()
+        });
+      }
+    }
+
+    // Карта и маршруты
+    function buildRoute() {
+      showToast('🧭 ИИ строит оптимальный маршрут...', 'info');
+      setTimeout(() => {
+        showToast('✓ Маршрут готов! 3 точки, 2.3 км', 'success');
+      }, 1500);
+    }
+
+    function startRoute() {
+      showToast('🚀 Маршрут начат! Следуйте указаниям', 'success');
+      addPoints(20);
+    }
+
+    // Отчёт о загрязнении
+    function reportPollution() {
+      document.getElementById('report-modal').classList.remove('hidden');
+    }
+
+    function closeReportModal() {
+      document.getElementById('report-modal').classList.add('hidden');
+    }
+
+    async function submitReport() {
+      const type = document.getElementById('report-type').value;
+      const desc = document.getElementById('report-desc').value;
+      
+      if (window.dataSdk && userData.length < 999) {
+        const result = await window.dataSdk.create({
+          type: 'pollution_report',
+          reportType: type,
+          reportLat: 55.75 + Math.random() * 0.1,
+          reportLng: 37.62 + Math.random() * 0.1,
+          reportStatus: 'new',
+          timestamp: new Date().toISOString()
+        });
+        
+        if (result.isOk) {
+          closeReportModal();
+          showToast('📍 Отчёт отправлен! +50 баллов', 'success');
+          addPoints(50);
+        } else {
+          showToast('Ошибка отправки отчёта', 'error');
+        }
+      } else if (userData.length >= 999) {
+        showToast('Достигнут лимит записей', 'error');
+      } else {
+        closeReportModal();
+        showToast('📍 Отчёт отправлен! +50 баллов', 'success');
+        addPoints(50);
+      }
+    }
+
+    // Челленджи
+    function completeChallenge(id) {
+      showToast('🎯 Задание выполнено! +30 баллов', 'success');
+      addPoints(30);
+    }
+
+    // Баллы
+    function addPoints(amount) {
+      userProfile.points += amount;
+      renderUserData();
+    }
+
+    // Toast уведомления
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const colors = {
+        success: 'bg-green-500',
+        error: 'bg-red-500',
+        info: 'bg-teal-500'
+      };
+      
+      const toast = document.createElement('div');
+      toast.className = `${colors[type]} rounded-xl px-4 py-3 text-sm font-semibold shadow-lg transform translate-y-2 opacity-0 transition-all duration-300`;
+      toast.textContent = message;
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+      
+      setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    
+
+
+
+    // Инициализация
+    updateUI();
+    renderUserData();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cedfd61f25d2d9f',t:'MTc3MTI1NDgxNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
+
+
+ </html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolveOn AI — Next Gen Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.4);
+            --bg: #0b0f1a;
+            --card: rgba(23, 28, 41, 0.8);
+            --text: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            background: 
+                radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 35%),
+                radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 35%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* Hero Scanner Section */
+        .scanner-card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 32px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scanner-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, var(--accent), transparent 30%);
+            animation: rotate 4s linear infinite;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        .main-btn {
+            width: 100px;
+            height: 100px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            margin: 20px 0;
+            box-shadow: 0 0 30px var(--accent-glow);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .main-btn:hover { transform: scale(1.1); }
+        .main-btn:active { transform: scale(0.9); }
+
+        /* Subjects Grid */
+        .subjects-row {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            scrollbar-width: none;
+        }
+
+        .subject-chip {
+            background: rgba(255,255,255,0.05);
+            padding: 10px 20px;
+            border-radius: 16px;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .subject-chip.active {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+
+        /* Smart Input Area */
+        .input-group {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .input-group input {
+            background: none;
+            border: none;
+            color: white;
+            flex: 1;
+            padding: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .action-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-val { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+        .stat-label { font-size: 12px; color: #64748b; }
+
+        /* Navigation Bar */
+        .nav-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 410px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(25px);
+            border-radius: 24px;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+        }
+
+        .nav-link { color: #64748b; text-decoration: none; font-size: 20px; transition: 0.3s; }
+        .nav-link.active { color: var(--accent); }
+
+        h2 { font-size: 18px; margin-bottom: 15px; font-weight: 700; color: #94a3b8; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo"><div class="logo-dot"></div> SolveOn</div>
+        <div class="action-icon" style="border-radius: 50%">🔥 7</div>
+    </header>
+
+    <div class="subjects-row">
+        <div class="subject-chip active">Все предметы</div>
+        <div class="subject-chip">Алгебра</div>
+        <div class="subject-chip">Геометрия</div>
+        <div class="subject-chip">Физика</div>
+        <div class="subject-chip">Химия</div>
+    </div>
+
+    <div class="scanner-card">
+        <p style="font-size: 14px; opacity: 0.7;">Нажми, чтобы сканировать</p>
+        <button class="main-btn" onclick="triggerCamera()">📸</button>
+        <h3 style="font-weight: 700;">Решить задачу по фото</h3>
+        <p style="font-size: 12px; margin-top: 10px; color: #64748b;">Поддержка рукописного текста</p>
+    </div>
+
+    <h2>Быстрый ввод</h2>
+    <div class="input-group">
+        <input type="text" placeholder="Введите условие или вопрос...">
+        <div class="action-icon">🎤</div>
+        <div class="action-icon" style="background: var(--accent)">🚀</div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-val">124</div>
+            <div class="stat-label">Решенных задач</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val">98%</div>
+            <div class="stat-label">Точность ИИ</div>
+        </div>
+    </div>
+
+    <div style="height: 100px;"></div> </div>
+
+<nav class="nav-bar">
+    <a href="#" class="nav-link active">🏠</a>
+    <a href="#" class="nav-link">📖</a>
+    <a href="#" class="nav-link">📊</a>
+    <a href="#" class="nav-link">👤</a>
+</nav>
+
+<script>
+    function triggerCamera() {
+        // Симуляция работы
+        const btn = document.querySelector('.main-btn');
+        btn.innerHTML = "⌛";
+        setTimeout(() => {
+            alert("Камера активирована. Выберите фото задачи.");
+            btn.innerHTML = "📸";
+        }, 800);
+    }
+
+    // Переключение чипсов предметов
+    const chips = document.querySelectorAll('.subject-chip');
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            chips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+        });
+    });
+</script>
+
+</body>
+</html>

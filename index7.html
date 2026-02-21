@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoShift</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        footer{
+            background:#000000;
+            color:white;
+            text-align:center;
+            padding:20px;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            background-image:
+                linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+                url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #222;
+
+
+            display: flex;
+    flex-direction: column;
+    align-items: center; /* центрируем по горизонтали */
+    justify-content: center; /* центрируем по вертикали */
+    min-height: 100vh; /* чтобы занимало весь экран */
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    padding: 20px;
+
+        }
+
+        header {
+            background: rgba(219, 236, 193, 0.95);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 44px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        header h2 {
+            font-weight: normal;
+            margin-bottom: 25px;
+        }
+
+        main {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        section, .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            line-height: 1.7;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color:#000000;
+            
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 25px;
+            background-color: #000;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 5px;
+        }
+        summary {
+  cursor: pointer;
+}
+
+
+        button:hover {
+            background-color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>EcoShift</h1>
+    <h2>«Осознай цифровые привычки — сохрани внимание, здоровье и ресурсы»</h2>
+
+    <div class="buttons">
+        <button>Назад</button>
+        <button>Далее</button>
+    </div>
+</header>
+
+<main>
+
+    <div class="card center" id="roles">
+        <button onclick="showVolunteer()">Для волонтёра</button>
+    </div>
+
+    <div class="card hidden" id="volunteer">
+        <h3>Волонтёр</h3>
+        <form>
+            <input name="fullname" placeholder="ФИО" required>
+            <input name="iin" placeholder="ИИН" maxlength="12" required>
+            <input name="contact" placeholder="Телефон" required>
+
+            <div class="center">
+                <button type="submit">Сохранить</button>
+                <button type="button" onclick="back()">Назад</button>
+            </div>
+        </form>
+    </div>
+
+    <section>
+        <h1>О проекте</h1>
+        <p>
+            Этот сайт посвящён экопросвещению и осознанному использованию цифровых технологий.
+            Мы живём в мире, где смартфоны, социальные сети и онлайн-сервисы стали частью
+            повседневной жизни, но их влияние часто остаётся незаметным.
+        </p>
+        <p>
+            Проект помогает понять, как цифровые привычки влияют на внимание, сон и
+            эмоциональное состояние, и показывает, как изменить поведение без стресса
+            и радикальных ограничений.
+        </p>
+    </section>
+    
+
+    <section>
+        <h1>Проблема</h1>
+        <ul>
+            <li>постоянные уведомления</li>
+            <li>бесконечный скроллинг</li>
+            <li>зависимость от социальных сетей</li>
+            <li>нарушение сна и концентрации</li>
+        </ul>
+        <p>
+            Это приводит к усталости, снижению продуктивности и ухудшению психологического состояния.
+            Проблема заключается не в технологиях, а в неосознанном их использовании.
+        </p>
+        
+
+    <section>
+        <h1>Цель проекта</h1>
+        <p>
+            Сформировать экологичное цифровое мышление и помочь людям изменить повседневные привычки.
+        </p>
+        <ul>
+            <li>осознанное использование гаджетов</li>
+            <li>баланс между онлайн и офлайн жизнью</li>
+            <li>простые шаги к цифровому благополучию</li>
+        </ul>
+    </section>
+
+    <section>
+        <h1>Для кого этот сайт</h1>
+        <p>
+            Сайт предназначен для пользователей, которые активно используют цифровые технологии
+            и хотят улучшить сон, внимание и общее качество жизни.
+        </p>
+    </section>
+    <details>
+  <summary>Органические отходы</summary>
+  Органические отходы (остатки еды, листья, трава) перерабатываются в компост, который улучшает почву и уменьшает количество мусора на свалках.
+</details>
+
+<details>
+  <summary>Пластик</summary>
+  Пластиковые бутылки, упаковки и пакеты можно сдавать на переработку. Это сокращает загрязнение океанов и экономит ресурсы для производства нового пластика.
+</details>
+
+<details>
+  <summary>Бумага</summary>
+  Старые газеты, журналы и офисная бумага перерабатываются в новую бумагу, уменьшая вырубку лесов и экономя воду и энергию.
+</details>
+
+<details>
+  <summary>Электроника</summary>
+  Старые телефоны, батарейки и бытовая техника содержат полезные металлы, которые можно извлечь повторно, предотвращая загрязнение почвы и воды.
+</details>
+
+<details>
+  <summary>Энергосбережение</summary>
+  Использование энергосберегающих ламп, выключение приборов из сети и переход на возобновляемые источники энергии сокращают выбросы CO₂ и сохраняют ресурсы планеты.
+</details>
+
+<details>
+  <summary>Вода</summary>
+  Экономия воды при поливе, мытье и бытовых процессах помогает сохранить пресные водные ресурсы и поддерживает экосистемы рек и озёр.
+</details>
+
+    </section>
+    </section>
+    <footer>© 2026 MindForge</footer>
+    <footer>Contact Us:</footer>
+    <ul>
+        <li>+7 775 616 88 68</li>
+        <li>Roza Bakieva/Balikshi</li>
+    </ul>
+</main>
+
+<script>
+    function showVolunteer() {
+        document.getElementById('roles').classList.add('hidden');
+        document.getElementById('volunteer').classList.remove('hidden');
+    }
+
+    function back() {
+        document.getElementById('volunteer').classList.add('hidden');
+        document.getElementById('roles').classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>
