@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoForge MVP</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color: white;
+    transition: 0.3s;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.card {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.primary {
+    background: #00c853;
+    color: white;
+}
+
+.progress-bar {
+    height: 20px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #00e676;
+    transition: 0.5s;
+}
+
+input {
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+        <h2>🌱 EcoForge Dashboard</h2>
+        <p>Твой уровень: <span id="level-text">1</span></p>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="level-progress"></div>
+        </div>
+
+        <br>
+        <button class="primary" onclick="addXP()">+10 XP</button>
+    </div>
+
+    <div class="card">
+        <h3>⚙ Настройки</h3>
+        <label>Размер шрифта:</label><br>
+        <input type="number" id="fontSizeInput" value="16"><br><br>
+
+        <label>Шрифт:</label><br>
+        <input type="text" id="fontFamilyInput" value="Arial"><br><br>
+
+        <button class="primary" onclick="applySettings()">Применить</button>
+    </div>
+
+    <div class="card">
+        <h3>🏆 Челлендж</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" id="challenge-progress"></div>
+        </div>
+        <br>
+        <button class="primary" onclick="addChallenge()">Выполнить шаг</button>
+    </div>
+
+</div>
+
+<script>
+let xp = 0;
+let level = 1;
+let challenge = 0;
+
+function addXP() {
+    xp += 10;
+    let progressPercent = xp;
+
+    if (xp >= 100) {
+        level++;
+        xp = 0;
+        progressPercent = 0;
+    }
+
+    document.getElementById("level-text").textContent = level;
+    document.getElementById("level-progress").style.width = `${progressPercent}%`;
+}
+
+function addChallenge() {
+    challenge += 20;
+    if (challenge > 100) challenge = 100;
+
+    document.getElementById("challenge-progress").style.width = `${challenge}%`;
+}
+
+function applySettings() {
+    const fontSize = document.getElementById("fontSizeInput").value;
+    const fontFamily = document.getElementById("fontFamilyInput").value;
+
+    document.body.style.fontSize = `${fontSize}px`;
+    document.body.style.fontFamily = `${fontFamily}, sans-serif`;
+}
+</script>
+
+</body>
+</html>
