@@ -1,188 +1,931 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GeneX — Медицинский помощник</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
-  transition: all .3s;
-}
-header, footer {
-  background: #1e88e5;
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
-.card {
-  background: white;
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-  border-radius: 12px;
-}
-button, input {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  font-size: 16px;
-}
-button {
-  background: #1e88e5;
-  color: white;
-  border: none;
-  border-radius: 8px;
-}
-button.secondary {
-  background: #ccc;
-  color: #000;
-}
-.hidden { display: none; }
-
-.big-text { font-size: 1.3em; }
-.high-contrast {
-  background: black;
-  color: rgb(44, 0, 222);
-}
-.sos {
-  background: red;
-  font-size: 24px;
-  padding: 20px;
-}
-.msg { text-align: center; font-weight: bold; }
-.success { color: green; }
-</style>
-</head>
-
-<body>
-
-<header>
-<h1>GeneX</h1>
-<p>Инновации в медицине Казахстана</p>
-</header>
-
-<div class="card">
-<h3>🎙 Голосовой помощник</h3>
-<button onclick="startVoice()">Начать говорить</button>
-<p id="voiceText">Ожидаю команду...</p>
-</div>
-
-<div class="card">
-<button onclick="toggleText()">👁 Режим слабовидящих</button>
-<button onclick="toggleContrast()">⚫ Высокий контраст</button>
-</div>
-
-<div class="card" id="roleSelect">
-<h3>Кто вы?</h3>
-<button onclick="showForm('patient')">Я пациент</button>
-<button onclick="showForm('doctor')">Я доктор</button>
-</div>
-
-<div class="card hidden" id="patientForm">
-<h3>Данные пациента</h3>
-<input id="pName" placeholder="ФИО">
-<input id="pIIN" placeholder="ИИН (12 цифр)" maxlength="12">
-<input id="pPhone" placeholder="Телефон">
-<button onclick="savePatient()">Сохранить</button>
-<button class="secondary" onclick="back()">Назад</button>
-<p class="msg" id="pMsg"></p>
-</div>
-
-<div class="card hidden" id="doctorForm">
-<h3>Регистрация врача</h3>
-<input id="dName" placeholder="Имя">
-<input id="dSurname" placeholder="Фамилия">
-<input id="dHospital" placeholder="Больница">
-<input id="dEmail" placeholder="Email">
-<input id="dPin" placeholder="PIN (4 цифры)" maxlength="4">
-<button onclick="saveDoctor()">Зарегистрироваться</button>
-<button class="secondary" onclick="back()">Назад</button>
-<p class="msg" id="dMsg"></p>
-</div>
-
-<div class="card" style="text-align:center;">
-<a href="tel:103"><button class="sos">🆘 SOS</button></a>
-</div>
-
-<footer>
-© 2026 GeneX | Казахстан
-</footer>
-
-<script>
-/* UI */
-function showForm(type){
-  roleSelect.classList.add("hidden");
-  patientForm.classList.add("hidden");
-  doctorForm.classList.add("hidden");
-  document.getElementById(type + "Form").classList.remove("hidden");
-}
-function back(){
-  roleSelect.classList.remove("hidden");
-  patientForm.classList.add("hidden");
-  doctorForm.classList.add("hidden");
-}
-function toggleText(){
-  document.body.classList.toggle("big-text");
-}
-function toggleContrast(){
-  document.body.classList.toggle("high-contrast");
-}
-
-/* DATA (localStorage) */
-function savePatient(){
-  const iin = pIIN.value;
-  if(iin.length !== 12 || isNaN(iin)){
-    pMsg.innerText = "ИИН должен содержать 12 цифр";
-    return;
-  }
-  localStorage.setItem("patient", JSON.stringify({
-    name: pName.value,
-    iin: iin,
-    phone: pPhone.value
-  }));
-  pMsg.innerText = "Пациент сохранён";
-  pMsg.className = "msg success";
-}
-
-function saveDoctor(){
-  localStorage.setItem("doctor", JSON.stringify({
-    name: dName.value,
-    surname: dSurname.value,
-    hospital: dHospital.value,
-    email: dEmail.value,
-    pin: dPin.value
-  }));
-  dMsg.innerText = "Доктор зарегистрирован";
-  dMsg.className = "msg success";
-}
-
-/* VOICE */
-function startVoice(){
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){
-    alert("Голос не поддерживается");
-    return;
-  }
-  const r = new SR();
-  r.lang = "ru-RU";
-  r.start();
-
-  r.onresult = e => {
-    const text = e.results[0][0].transcript.toLowerCase();
-    voiceText.innerText = "Вы сказали: " + text;
-
-    if(text.includes("пациент")) showForm("patient");
-    if(text.includes("доктор")) showForm("doctor");
-    if(text.includes("скорая")) location.href = "tel:103";
-
-    speechSynthesis.speak(new SpeechSynthesisUtterance(text));
-  }
-}
-</script>
-
-</body>
+<!doctype html>
+<html lang="ru" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Нейротренер</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Unbounded', sans-serif; }
+    
+    .neuron {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, #a855f7, #7c3aed);
+      border-radius: 50%;
+      box-shadow: 0 0 15px #a855f7, 0 0 30px #7c3aed;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .synapse {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #a855f7, #06b6d4, #a855f7, transparent);
+      transform-origin: left center;
+      animation: spark 1.5s ease-in-out infinite;
+      box-shadow: 0 0 8px #06b6d4;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+    
+    @keyframes spark {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    
+    @keyframes newConnection {
+      0% { stroke-dashoffset: 100; opacity: 0; }
+      50% { opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+    
+    .new-synapse {
+      animation: growSynapse 0.8s ease-out forwards;
+    }
+    
+    @keyframes growSynapse {
+      0% { transform: scaleX(0); opacity: 0; }
+      100% { transform: scaleX(1); opacity: 1; }
+    }
+    
+    .game-card {
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(168, 85, 247, 0.3);
+    }
+    
+    .brain-zone {
+      transition: all 0.5s ease;
+    }
+    
+    .brain-zone.active {
+      filter: drop-shadow(0 0 20px currentColor);
+    }
+    
+    .memory-card {
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    
+    .memory-card-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    
+    .memory-card.flipped .memory-card-inner {
+      transform: rotateY(180deg);
+    }
+    
+    .memory-card-front, .memory-card-back {
+      backface-visibility: hidden;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .memory-card-back {
+      transform: rotateY(180deg);
+    }
+    
+    .sequence-btn {
+      transition: all 0.2s ease;
+    }
+    
+    .sequence-btn.highlight {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px currentColor;
+    }
+    
+    .progress-ring {
+      transform: rotate(-90deg);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full bg-slate-950 text-white overflow-auto">
+  <div id="app" class="min-h-full w-full relative"><!-- Neural Background -->
+   <div id="neural-bg" class="fixed inset-0 pointer-events-none overflow-hidden opacity-30"></div><!-- Main Content -->
+   <div class="relative z-10 p-6 max-w-6xl mx-auto"><!-- Header -->
+    <header class="text-center mb-8">
+     <div class="inline-flex items-center gap-3 mb-4">
+      <svg class="w-12 h-12" viewbox="0 0 100 100"><defs>
+        <lineargradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+         <stop offset="0%" style="stop-color:#a855f7" />
+         <stop offset="100%" style="stop-color:#06b6d4" />
+        </lineargradient>
+       </defs> <path fill="url(#brainGrad)" d="M50 10c-20 0-35 15-35 35 0 8 3 15 7 21l-2 14c0 3 2 5 5 5h50c3 0 5-2 5-5l-2-14c4-6 7-13 7-21 0-20-15-35-35-35zm-15 30c-3 0-5-2-5-5s2-5 5-5 5 2 5 5-2 5-5 5zm15 20c-8 0-15-5-18-12h36c-3 7-10 12-18 12zm15-20c-3 0-5-2-5-5s2-5 5-5 5 2 5 5-2 5-5 5z" />
+      </svg>
+      <h1 id="main-title" class="text-4xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">Нейротренер</h1>
+     </div>
+     <p id="subtitle" class="text-slate-400 text-lg">Тренируй мозг — формируй новые нейронные связи</p>
+    </header><!-- Stats Panel -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+     <div class="bg-slate-900/50 border border-purple-500/30 rounded-2xl p-4 text-center">
+      <div class="text-3xl font-bold text-purple-400" id="total-neurons">
+       0
+      </div>
+      <div class="text-slate-400 text-sm">
+       Нейронов создано
+      </div>
+     </div>
+     <div class="bg-slate-900/50 border border-cyan-500/30 rounded-2xl p-4 text-center">
+      <div class="text-3xl font-bold text-cyan-400" id="total-sessions">
+       0
+      </div>
+      <div class="text-slate-400 text-sm">
+       Тренировок
+      </div>
+     </div>
+     <div class="bg-slate-900/50 border border-pink-500/30 rounded-2xl p-4 text-center">
+      <div class="text-3xl font-bold text-pink-400" id="best-score">
+       0
+      </div>
+      <div class="text-slate-400 text-sm">
+       Лучший счёт
+      </div>
+     </div>
+     <div class="bg-slate-900/50 border border-green-500/30 rounded-2xl p-4 text-center">
+      <div class="text-3xl font-bold text-green-400" id="streak">
+       0
+      </div>
+      <div class="text-slate-400 text-sm">
+       Дней подряд
+      </div>
+     </div>
+    </div><!-- Brain Visualization -->
+    <div class="bg-slate-900/50 border border-slate-700 rounded-3xl p-6 mb-8">
+     <h2 class="text-xl font-semibold mb-4 text-center">🧠 Активность мозга</h2>
+     <div class="flex justify-center">
+      <svg id="brain-map" viewbox="0 0 300 200" class="w-full max-w-md"><!-- Brain outline --> <ellipse cx="150" cy="100" rx="120" ry="80" fill="none" stroke="#334155" stroke-width="2" /> <!-- Brain zones --> <g id="frontal-zone" class="brain-zone" style="color: #a855f7">
+        <ellipse cx="150" cy="50" rx="60" ry="30" fill="currentColor" opacity="0.3" />
+        <text x="150" y="55" text-anchor="middle" fill="white" font-size="10">
+         Логика
+        </text>
+       </g> <g id="temporal-left" class="brain-zone" style="color: #06b6d4">
+        <ellipse cx="70" cy="100" rx="35" ry="25" fill="currentColor" opacity="0.3" />
+        <text x="70" y="105" text-anchor="middle" fill="white" font-size="9">
+         Память
+        </text>
+       </g> <g id="temporal-right" class="brain-zone" style="color: #f472b6">
+        <ellipse cx="230" cy="100" rx="35" ry="25" fill="currentColor" opacity="0.3" />
+        <text x="230" y="105" text-anchor="middle" fill="white" font-size="9">
+         Ритм
+        </text>
+       </g> <g id="parietal-zone" class="brain-zone" style="color: #22c55e">
+        <ellipse cx="150" cy="130" rx="50" ry="25" fill="currentColor" opacity="0.3" />
+        <text x="150" y="135" text-anchor="middle" fill="white" font-size="10">
+         Внимание
+        </text>
+       </g> <!-- Dynamic connections will be added here --> <g id="connections"></g>
+      </svg>
+     </div>
+     <p class="text-center text-slate-400 text-sm mt-4">Играй в игры — смотри как формируются новые связи!</p>
+    </div><!-- Games Menu -->
+    <div id="games-menu">
+     <h2 class="text-2xl font-bold mb-6 text-center">🎮 Мини-игры для мозга</h2>
+     <div class="grid md:grid-cols-2 gap-6"><!-- Memory Game -->
+      <div class="game-card bg-gradient-to-br from-cyan-900/50 to-slate-900/50 border border-cyan-500/30 rounded-3xl p-6 cursor-pointer" onclick="startGame('memory')">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-16 h-16 bg-cyan-500/20 rounded-2xl flex items-center justify-content-center text-4xl">
+         🃏
+        </div>
+        <div>
+         <h3 class="text-xl font-bold text-cyan-400">Память</h3>
+         <p class="text-slate-400 text-sm">Найди пары карточек</p>
+        </div>
+       </div>
+       <p class="text-slate-300 text-sm mb-4">Тренирует: височную долю, гиппокамп</p>
+       <div class="flex items-center gap-2"><span class="px-3 py-1 bg-cyan-500/20 rounded-full text-cyan-400 text-xs">Память</span> <span class="px-3 py-1 bg-purple-500/20 rounded-full text-purple-400 text-xs">Концентрация</span>
+       </div>
+      </div><!-- Sequence Game -->
+      <div class="game-card bg-gradient-to-br from-pink-900/50 to-slate-900/50 border border-pink-500/30 rounded-3xl p-6 cursor-pointer" onclick="startGame('sequence')">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-16 h-16 bg-pink-500/20 rounded-2xl flex items-center justify-content-center text-4xl">
+         🎵
+        </div>
+        <div>
+         <h3 class="text-xl font-bold text-pink-400">Последовательность</h3>
+         <p class="text-slate-400 text-sm">Запомни порядок</p>
+        </div>
+       </div>
+       <p class="text-slate-300 text-sm mb-4">Тренирует: рабочую память, ритм</p>
+       <div class="flex items-center gap-2"><span class="px-3 py-1 bg-pink-500/20 rounded-full text-pink-400 text-xs">Ритм</span> <span class="px-3 py-1 bg-green-500/20 rounded-full text-green-400 text-xs">Внимание</span>
+       </div>
+      </div><!-- Math Speed -->
+      <div class="game-card bg-gradient-to-br from-purple-900/50 to-slate-900/50 border border-purple-500/30 rounded-3xl p-6 cursor-pointer" onclick="startGame('math')">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-content-center text-4xl">
+         🔢
+        </div>
+        <div>
+         <h3 class="text-xl font-bold text-purple-400">Быстрый счёт</h3>
+         <p class="text-slate-400 text-sm">Реши примеры на скорость</p>
+        </div>
+       </div>
+       <p class="text-slate-300 text-sm mb-4">Тренирует: префронтальную кору, логику</p>
+       <div class="flex items-center gap-2"><span class="px-3 py-1 bg-purple-500/20 rounded-full text-purple-400 text-xs">Логика</span> <span class="px-3 py-1 bg-cyan-500/20 rounded-full text-cyan-400 text-xs">Скорость</span>
+       </div>
+      </div><!-- Reaction Game -->
+      <div class="game-card bg-gradient-to-br from-green-900/50 to-slate-900/50 border border-green-500/30 rounded-3xl p-6 cursor-pointer" onclick="startGame('reaction')">
+       <div class="flex items-center gap-4 mb-4">
+        <div class="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-content-center text-4xl">
+         ⚡
+        </div>
+        <div>
+         <h3 class="text-xl font-bold text-green-400">Реакция</h3>
+         <p class="text-slate-400 text-sm">Лови цели быстро</p>
+        </div>
+       </div>
+       <p class="text-slate-300 text-sm mb-4">Тренирует: моторную кору, рефлексы</p>
+       <div class="flex items-center gap-2"><span class="px-3 py-1 bg-green-500/20 rounded-full text-green-400 text-xs">Реакция</span> <span class="px-3 py-1 bg-pink-500/20 rounded-full text-pink-400 text-xs">Координация</span>
+       </div>
+      </div>
+     </div>
+    </div><!-- Game Area (Hidden by default) -->
+    <div id="game-area" class="hidden">
+     <div class="flex items-center justify-between mb-6"><button onclick="exitGame()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-slate-300 transition-colors"> ← Назад </button>
+      <div class="flex items-center gap-4">
+       <div class="text-xl font-bold">
+        Счёт: <span id="game-score" class="text-cyan-400">0</span>
+       </div>
+       <div class="text-xl font-bold">
+        ⏱ <span id="game-timer" class="text-pink-400">30</span>
+       </div>
+      </div>
+     </div>
+     <div id="game-content" class="bg-slate-900/50 border border-slate-700 rounded-3xl p-6 min-h-[400px]"><!-- Game content will be rendered here -->
+     </div>
+    </div><!-- Game Over Modal -->
+    <div id="game-over-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+     <div class="bg-slate-900 border border-purple-500/50 rounded-3xl p-8 max-w-md w-full text-center">
+      <div class="text-6xl mb-4">
+       🧠
+      </div>
+      <h2 class="text-2xl font-bold mb-2">Тренировка завершена!</h2>
+      <div class="text-4xl font-bold text-cyan-400 mb-2" id="final-score">
+       0
+      </div>
+      <p class="text-slate-400 mb-4">очков заработано</p>
+      <div class="bg-slate-800/50 rounded-2xl p-4 mb-6">
+       <div class="flex items-center justify-center gap-2 text-green-400"><span class="text-2xl">+</span> <span class="text-3xl font-bold" id="neurons-earned">0</span> <span>новых связей!</span>
+       </div>
+       <p class="text-slate-400 text-sm mt-2">Твой мозг стал сильнее 💪</p>
+      </div><!-- Neuron Formation Animation -->
+      <div id="neuron-animation" class="h-32 relative mb-6 overflow-hidden rounded-xl bg-slate-950">
+       <svg class="w-full h-full" id="formation-svg"></svg>
+      </div>
+      <div class="flex gap-4"><button onclick="closeGameOver()" class="flex-1 px-6 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl transition-colors"> В меню </button> <button onclick="playAgain()" class="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 rounded-xl font-semibold transition-colors"> Ещё раз </button>
+      </div>
+     </div>
+    </div><!-- Training History -->
+    <div class="mt-8">
+     <h2 class="text-xl font-bold mb-4">📊 История тренировок</h2>
+     <div id="history-list" class="space-y-2 max-h-64 overflow-y-auto">
+      <p class="text-slate-500 text-center py-8">Пока нет тренировок. Начни играть!</p>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    // Configuration
+    const defaultConfig = {
+      main_title: 'Нейротренер',
+      subtitle: 'Тренируй мозг — формируй новые нейронные связи',
+      background_color: '#020617',
+      surface_color: '#0f172a',
+      text_color: '#f1f5f9',
+      primary_color: '#a855f7',
+      secondary_color: '#06b6d4'
+    };
+    
+    let config = { ...defaultConfig };
+    let trainingHistory = [];
+    let currentGame = null;
+    let gameScore = 0;
+    let gameTimer = null;
+    let timeLeft = 30;
+    
+    // Initialize neural background
+    function initNeuralBackground() {
+      const bg = document.getElementById('neural-bg');
+      bg.innerHTML = '';
+      
+      // Create neurons
+      for (let i = 0; i < 20; i++) {
+        const neuron = document.createElement('div');
+        neuron.className = 'neuron';
+        neuron.style.left = Math.random() * 100 + '%';
+        neuron.style.top = Math.random() * 100 + '%';
+        neuron.style.animationDelay = Math.random() * 2 + 's';
+        bg.appendChild(neuron);
+      }
+      
+      // Create synapses
+      for (let i = 0; i < 15; i++) {
+        const synapse = document.createElement('div');
+        synapse.className = 'synapse';
+        synapse.style.left = Math.random() * 80 + '%';
+        synapse.style.top = Math.random() * 100 + '%';
+        synapse.style.width = (50 + Math.random() * 100) + 'px';
+        synapse.style.transform = `rotate(${Math.random() * 360}deg)`;
+        synapse.style.animationDelay = Math.random() * 1.5 + 's';
+        bg.appendChild(synapse);
+      }
+    }
+    
+    // Update UI with config
+    function updateUI() {
+      document.getElementById('main-title').textContent = config.main_title || defaultConfig.main_title;
+      document.getElementById('subtitle').textContent = config.subtitle || defaultConfig.subtitle;
+      document.body.style.backgroundColor = config.background_color || defaultConfig.background_color;
+    }
+    
+    // Update stats from history
+    function updateStats() {
+      const totalNeurons = trainingHistory.reduce((sum, t) => sum + (t.neurons_formed || 0), 0);
+      const totalSessions = trainingHistory.length;
+      const bestScore = trainingHistory.length > 0 ? Math.max(...trainingHistory.map(t => t.score || 0)) : 0;
+      
+      // Calculate streak
+      const dates = [...new Set(trainingHistory.map(t => t.date?.split('T')[0]))].sort().reverse();
+      let streak = 0;
+      const today = new Date().toISOString().split('T')[0];
+      
+      for (let i = 0; i < dates.length; i++) {
+        const expectedDate = new Date();
+        expectedDate.setDate(expectedDate.getDate() - i);
+        if (dates[i] === expectedDate.toISOString().split('T')[0]) {
+          streak++;
+        } else break;
+      }
+      
+      document.getElementById('total-neurons').textContent = totalNeurons;
+      document.getElementById('total-sessions').textContent = totalSessions;
+      document.getElementById('best-score').textContent = bestScore;
+      document.getElementById('streak').textContent = streak;
+    }
+    
+    // Render history list
+    function renderHistory() {
+      const list = document.getElementById('history-list');
+      
+      if (trainingHistory.length === 0) {
+        list.innerHTML = '<p class="text-slate-500 text-center py-8">Пока нет тренировок. Начни играть!</p>';
+        return;
+      }
+      
+      const sorted = [...trainingHistory].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+      
+      const gameNames = {
+        'memory': '🃏 Память',
+        'sequence': '🎵 Последовательность',
+        'math': '🔢 Быстрый счёт',
+        'reaction': '⚡ Реакция'
+      };
+      
+      list.innerHTML = sorted.map(t => {
+        const date = new Date(t.date);
+        const timeStr = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        const dateStr = date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+        
+        return `
+          <div class="bg-slate-800/50 rounded-xl p-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">${gameNames[t.game_type]?.split(' ')[0] || '🎮'}</span>
+              <div>
+                <div class="font-medium">${gameNames[t.game_type] || t.game_type}</div>
+                <div class="text-slate-400 text-sm">${dateStr}, ${timeStr}</div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="font-bold text-cyan-400">${t.score} очков</div>
+              <div class="text-green-400 text-sm">+${t.neurons_formed} связей</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    // Start a game
+    function startGame(type) {
+      currentGame = type;
+      gameScore = 0;
+      timeLeft = 30;
+      
+      document.getElementById('games-menu').classList.add('hidden');
+      document.getElementById('game-area').classList.remove('hidden');
+      document.getElementById('game-score').textContent = '0';
+      document.getElementById('game-timer').textContent = '30';
+      
+      // Activate brain zone
+      activateBrainZone(type);
+      
+      // Start timer
+      gameTimer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('game-timer').textContent = timeLeft;
+        if (timeLeft <= 0) {
+          endGame();
+        }
+      }, 1000);
+      
+      // Render game
+      switch(type) {
+        case 'memory': renderMemoryGame(); break;
+        case 'sequence': renderSequenceGame(); break;
+        case 'math': renderMathGame(); break;
+        case 'reaction': renderReactionGame(); break;
+      }
+    }
+    
+    // Activate brain zone visualization
+    function activateBrainZone(type) {
+      const zones = {
+        'memory': 'temporal-left',
+        'sequence': 'temporal-right',
+        'math': 'frontal-zone',
+        'reaction': 'parietal-zone'
+      };
+      
+      document.querySelectorAll('.brain-zone').forEach(z => z.classList.remove('active'));
+      const zone = document.getElementById(zones[type]);
+      if (zone) zone.classList.add('active');
+    }
+    
+    // Memory Game
+    let memoryCards = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    
+    function renderMemoryGame() {
+      const emojis = ['🌟', '🎯', '🚀', '💎', '🔥', '⚡', '🌈', '🎪'];
+      memoryCards = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
+      flippedCards = [];
+      matchedPairs = 0;
+      
+      const content = document.getElementById('game-content');
+      content.innerHTML = `
+        <h3 class="text-xl font-bold text-center mb-4 text-cyan-400">Найди все пары!</h3>
+        <div class="grid grid-cols-4 gap-3 max-w-md mx-auto">
+          ${memoryCards.map((emoji, i) => `
+            <div class="memory-card aspect-square" data-index="${i}" onclick="flipCard(${i})">
+              <div class="memory-card-inner w-full h-full relative">
+                <div class="memory-card-front bg-gradient-to-br from-cyan-600 to-cyan-800 text-3xl">❓</div>
+                <div class="memory-card-back bg-gradient-to-br from-slate-700 to-slate-800 text-4xl">${emoji}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+    
+    function flipCard(index) {
+      const card = document.querySelector(`.memory-card[data-index="${index}"]`);
+      if (card.classList.contains('flipped') || flippedCards.length >= 2) return;
+      
+      card.classList.add('flipped');
+      flippedCards.push(index);
+      
+      if (flippedCards.length === 2) {
+        const [first, second] = flippedCards;
+        if (memoryCards[first] === memoryCards[second]) {
+          gameScore += 10;
+          matchedPairs++;
+          document.getElementById('game-score').textContent = gameScore;
+          flippedCards = [];
+          addBrainConnection();
+          
+          if (matchedPairs === 8) {
+            gameScore += 50; // Bonus
+            document.getElementById('game-score').textContent = gameScore;
+            setTimeout(endGame, 500);
+          }
+        } else {
+          setTimeout(() => {
+            document.querySelector(`.memory-card[data-index="${first}"]`).classList.remove('flipped');
+            document.querySelector(`.memory-card[data-index="${second}"]`).classList.remove('flipped');
+            flippedCards = [];
+          }, 1000);
+        }
+      }
+    }
+    
+    // Sequence Game
+    let sequence = [];
+    let playerSequence = [];
+    let sequenceLevel = 0;
+    
+    function renderSequenceGame() {
+      sequence = [];
+      playerSequence = [];
+      sequenceLevel = 0;
+      
+      const colors = [
+        { bg: 'from-red-600 to-red-800', text: 'red' },
+        { bg: 'from-blue-600 to-blue-800', text: 'blue' },
+        { bg: 'from-green-600 to-green-800', text: 'green' },
+        { bg: 'from-yellow-500 to-yellow-700', text: 'yellow' }
+      ];
+      
+      const content = document.getElementById('game-content');
+      content.innerHTML = `
+        <h3 class="text-xl font-bold text-center mb-4 text-pink-400">Повтори последовательность!</h3>
+        <div class="grid grid-cols-2 gap-4 max-w-xs mx-auto mb-6">
+          ${colors.map((c, i) => `
+            <button class="sequence-btn aspect-square rounded-2xl bg-gradient-to-br ${c.bg} text-white text-2xl font-bold opacity-70 hover:opacity-100 transition-all" 
+                    data-color="${i}" onclick="playerClick(${i})" disabled>
+              ${i + 1}
+            </button>
+          `).join('')}
+        </div>
+        <p id="sequence-status" class="text-center text-slate-400">Смотри и запоминай...</p>
+        <button id="start-sequence" onclick="nextSequenceLevel()" class="block mx-auto mt-4 px-6 py-3 bg-pink-600 hover:bg-pink-500 rounded-xl font-semibold transition-colors">
+          Начать
+        </button>
+      `;
+    }
+    
+    function nextSequenceLevel() {
+      document.getElementById('start-sequence')?.remove();
+      sequenceLevel++;
+      sequence.push(Math.floor(Math.random() * 4));
+      playerSequence = [];
+      
+      document.getElementById('sequence-status').textContent = 'Смотри...';
+      document.querySelectorAll('.sequence-btn').forEach(b => b.disabled = true);
+      
+      playSequence(0);
+    }
+    
+    function playSequence(index) {
+      if (index >= sequence.length) {
+        document.getElementById('sequence-status').textContent = 'Твоя очередь!';
+        document.querySelectorAll('.sequence-btn').forEach(b => b.disabled = false);
+        return;
+      }
+      
+      const btn = document.querySelector(`.sequence-btn[data-color="${sequence[index]}"]`);
+      btn.classList.add('highlight');
+      
+      setTimeout(() => {
+        btn.classList.remove('highlight');
+        setTimeout(() => playSequence(index + 1), 300);
+      }, 500);
+    }
+    
+    function playerClick(color) {
+      playerSequence.push(color);
+      const btn = document.querySelector(`.sequence-btn[data-color="${color}"]`);
+      btn.classList.add('highlight');
+      setTimeout(() => btn.classList.remove('highlight'), 200);
+      
+      const index = playerSequence.length - 1;
+      if (playerSequence[index] !== sequence[index]) {
+        document.getElementById('sequence-status').textContent = 'Ошибка! Игра окончена.';
+        document.querySelectorAll('.sequence-btn').forEach(b => b.disabled = true);
+        setTimeout(endGame, 1000);
+        return;
+      }
+      
+      if (playerSequence.length === sequence.length) {
+        gameScore += sequenceLevel * 5;
+        document.getElementById('game-score').textContent = gameScore;
+        document.getElementById('sequence-status').textContent = `Уровень ${sequenceLevel} пройден! +${sequenceLevel * 5}`;
+        addBrainConnection();
+        
+        setTimeout(nextSequenceLevel, 1000);
+      }
+    }
+    
+    // Math Game
+    let mathAnswer = 0;
+    
+    function renderMathGame() {
+      generateMathProblem();
+    }
+    
+    function generateMathProblem() {
+      const ops = ['+', '-', '×'];
+      const op = ops[Math.floor(Math.random() * ops.length)];
+      let a, b;
+      
+      switch(op) {
+        case '+':
+          a = Math.floor(Math.random() * 50) + 1;
+          b = Math.floor(Math.random() * 50) + 1;
+          mathAnswer = a + b;
+          break;
+        case '-':
+          a = Math.floor(Math.random() * 50) + 20;
+          b = Math.floor(Math.random() * 20) + 1;
+          mathAnswer = a - b;
+          break;
+        case '×':
+          a = Math.floor(Math.random() * 12) + 1;
+          b = Math.floor(Math.random() * 12) + 1;
+          mathAnswer = a * b;
+          break;
+      }
+      
+      const wrongAnswers = [
+        mathAnswer + Math.floor(Math.random() * 10) + 1,
+        mathAnswer - Math.floor(Math.random() * 10) - 1,
+        mathAnswer + Math.floor(Math.random() * 5) - 2
+      ].filter(a => a !== mathAnswer && a > 0);
+      
+      const answers = [mathAnswer, ...wrongAnswers.slice(0, 3)].sort(() => Math.random() - 0.5);
+      
+      const content = document.getElementById('game-content');
+      content.innerHTML = `
+        <h3 class="text-xl font-bold text-center mb-6 text-purple-400">Реши пример!</h3>
+        <div class="text-center mb-8">
+          <span class="text-6xl font-bold">${a} ${op} ${b} = ?</span>
+        </div>
+        <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+          ${answers.map(ans => `
+            <button onclick="checkMathAnswer(${ans})" class="py-6 text-3xl font-bold bg-slate-800 hover:bg-purple-600 rounded-2xl transition-colors">
+              ${ans}
+            </button>
+          `).join('')}
+        </div>
+      `;
+    }
+    
+    function checkMathAnswer(answer) {
+      if (answer === mathAnswer) {
+        gameScore += 10;
+        document.getElementById('game-score').textContent = gameScore;
+        addBrainConnection();
+      }
+      generateMathProblem();
+    }
+    
+    // Reaction Game
+    let reactionTimeout = null;
+    
+    function renderReactionGame() {
+      const content = document.getElementById('game-content');
+      content.innerHTML = `
+        <h3 class="text-xl font-bold text-center mb-4 text-green-400">Лови цели!</h3>
+        <div id="reaction-area" class="relative h-80 bg-slate-800/50 rounded-2xl overflow-hidden">
+          <p class="absolute inset-0 flex items-center justify-center text-slate-400">Жди появления цели...</p>
+        </div>
+      `;
+      
+      spawnTarget();
+    }
+    
+    function spawnTarget() {
+      if (timeLeft <= 0) return;
+      
+      const area = document.getElementById('reaction-area');
+      if (!area) return;
+      
+      const delay = Math.random() * 1500 + 500;
+      
+      reactionTimeout = setTimeout(() => {
+        const x = Math.random() * 80 + 5;
+        const y = Math.random() * 70 + 10;
+        const size = Math.random() * 30 + 40;
+        
+        area.innerHTML = `
+          <button onclick="hitTarget(this)" 
+                  class="absolute bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-2xl shadow-lg shadow-green-500/50 hover:scale-110 transition-transform"
+                  style="left: ${x}%; top: ${y}%; width: ${size}px; height: ${size}px;">
+            🎯
+          </button>
+        `;
+        
+        // Auto-remove after 2s
+        setTimeout(() => {
+          const btn = area.querySelector('button');
+          if (btn) {
+            area.innerHTML = '<p class="absolute inset-0 flex items-center justify-center text-slate-400">Пропустил! Жди следующую...</p>';
+            spawnTarget();
+          }
+        }, 2000);
+      }, delay);
+    }
+    
+    function hitTarget(btn) {
+      gameScore += 5;
+      document.getElementById('game-score').textContent = gameScore;
+      btn.remove();
+      addBrainConnection();
+      
+      const area = document.getElementById('reaction-area');
+      area.innerHTML = '<p class="absolute inset-0 flex items-center justify-center text-green-400 text-2xl font-bold">+5! 🎉</p>';
+      
+      setTimeout(spawnTarget, 300);
+    }
+    
+    // Add brain connection visualization
+    function addBrainConnection() {
+      const connections = document.getElementById('connections');
+      const zones = ['frontal-zone', 'temporal-left', 'temporal-right', 'parietal-zone'];
+      const positions = {
+        'frontal-zone': { x: 150, y: 50 },
+        'temporal-left': { x: 70, y: 100 },
+        'temporal-right': { x: 230, y: 100 },
+        'parietal-zone': { x: 150, y: 130 }
+      };
+      
+      const from = zones[Math.floor(Math.random() * zones.length)];
+      let to = zones[Math.floor(Math.random() * zones.length)];
+      while (to === from) to = zones[Math.floor(Math.random() * zones.length)];
+      
+      const p1 = positions[from];
+      const p2 = positions[to];
+      
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', p1.x);
+      line.setAttribute('y1', p1.y);
+      line.setAttribute('x2', p2.x);
+      line.setAttribute('y2', p2.y);
+      line.setAttribute('stroke', '#a855f7');
+      line.setAttribute('stroke-width', '2');
+      line.setAttribute('stroke-dasharray', '100');
+      line.setAttribute('stroke-dashoffset', '100');
+      line.style.animation = 'newConnection 0.5s ease-out forwards';
+      
+      connections.appendChild(line);
+      
+      // Remove old connections if too many
+      if (connections.children.length > 15) {
+        connections.removeChild(connections.children[0]);
+      }
+    }
+    
+    // End game
+    function endGame() {
+      clearInterval(gameTimer);
+      clearTimeout(reactionTimeout);
+      
+      const neuronsEarned = Math.floor(gameScore / 5);
+      
+      document.getElementById('final-score').textContent = gameScore;
+      document.getElementById('neurons-earned').textContent = neuronsEarned;
+      document.getElementById('game-over-modal').classList.remove('hidden');
+      
+      // Animate neuron formation
+      animateNeuronFormation(neuronsEarned);
+      
+      // Save to database
+      saveTraining(currentGame, gameScore, neuronsEarned);
+    }
+    
+    function animateNeuronFormation(count) {
+      const svg = document.getElementById('formation-svg');
+      svg.innerHTML = '';
+      
+      const neurons = [];
+      for (let i = 0; i < Math.min(count, 10); i++) {
+        const cx = 30 + Math.random() * 240;
+        const cy = 20 + Math.random() * 90;
+        neurons.push({ cx, cy });
+        
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', cx);
+        circle.setAttribute('cy', cy);
+        circle.setAttribute('r', '6');
+        circle.setAttribute('fill', '#a855f7');
+        circle.style.animation = `pulse 1s ease-in-out infinite ${i * 0.1}s`;
+        svg.appendChild(circle);
+      }
+      
+      // Add connections
+      for (let i = 0; i < neurons.length - 1; i++) {
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', neurons[i].cx);
+        line.setAttribute('y1', neurons[i].cy);
+        line.setAttribute('x2', neurons[i + 1].cx);
+        line.setAttribute('y2', neurons[i + 1].cy);
+        line.setAttribute('stroke', '#06b6d4');
+        line.setAttribute('stroke-width', '2');
+        line.setAttribute('stroke-dasharray', '100');
+        line.setAttribute('stroke-dashoffset', '100');
+        line.style.animation = `newConnection 0.8s ease-out ${0.5 + i * 0.2}s forwards`;
+        svg.appendChild(line);
+      }
+    }
+    
+    // Save training to database
+    async function saveTraining(gameType, score, neurons) {
+      if (trainingHistory.length >= 999) {
+        console.warn('Maximum training history reached');
+        return;
+      }
+      
+      const result = await window.dataSdk.create({
+        date: new Date().toISOString(),
+        game_type: gameType,
+        score: score,
+        neurons_formed: neurons
+      });
+      
+      if (!result.isOk) {
+        console.error('Failed to save training:', result.error);
+      }
+    }
+    
+    function closeGameOver() {
+      document.getElementById('game-over-modal').classList.add('hidden');
+      exitGame();
+    }
+    
+    function playAgain() {
+      document.getElementById('game-over-modal').classList.add('hidden');
+      startGame(currentGame);
+    }
+    
+    function exitGame() {
+      clearInterval(gameTimer);
+      clearTimeout(reactionTimeout);
+      document.getElementById('game-area').classList.add('hidden');
+      document.getElementById('games-menu').classList.remove('hidden');
+      document.querySelectorAll('.brain-zone').forEach(z => z.classList.remove('active'));
+    }
+    
+    // Data SDK handler
+    const dataHandler = {
+      onDataChanged(data) {
+        trainingHistory = data;
+        updateStats();
+        renderHistory();
+      }
+    };
+    
+    // Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (cfg) => {
+          config = { ...defaultConfig, ...cfg };
+          updateUI();
+        },
+        mapToCapabilities: (cfg) => ({
+          recolorables: [
+            {
+              get: () => cfg.background_color || defaultConfig.background_color,
+              set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+            },
+            {
+              get: () => cfg.surface_color || defaultConfig.surface_color,
+              set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+            },
+            {
+              get: () => cfg.text_color || defaultConfig.text_color,
+              set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+            },
+            {
+              get: () => cfg.primary_color || defaultConfig.primary_color,
+              set: (v) => { cfg.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); }
+            },
+            {
+              get: () => cfg.secondary_color || defaultConfig.secondary_color,
+              set: (v) => { cfg.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ['main_title', cfg.main_title || defaultConfig.main_title],
+          ['subtitle', cfg.subtitle || defaultConfig.subtitle]
+        ])
+      });
+    }
+    
+    // Initialize
+    async function init() {
+      initNeuralBackground();
+      updateUI();
+      
+      if (window.dataSdk) {
+        const result = await window.dataSdk.init(dataHandler);
+        if (!result.isOk) {
+          console.error('Failed to init data SDK');
+        }
+      }
+    }
+    
+    init();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d516b55a564871b',t:'MTc3MjI5NzQwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

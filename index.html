@@ -1,192 +1,1171 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyLand - Образовательная Платформа</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Open+Sans:wght@300..800&display=swap" rel="stylesheet">
-    <style>
-        /* Base Styles */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Open Sans', sans-serif;
-            /* Added a fallback color in case the image doesn't load */
-            background: #83b1e0 url("image.jpg") no-repeat center center fixed; 
-            background-size: cover;
-            color: #333;
-            line-height: 1.6;
-        }
+<!doctype html>
+<html lang="ru" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genex BIOSAFE</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    
+    @keyframes slide-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-        /* Header Navigation */
-        .header-box {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 5%;
-            background: rgba(180, 228, 249, 0.95); /* Added slight transparency */
-            backdrop-filter: blur(5px);
-            border-bottom: 2px solid white;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-float-delay { animation: float 6s ease-in-out infinite 2s; }
+    .animate-pulse-ring { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    .animate-slide-up { animation: slide-up 0.8s ease-out forwards; }
+    .animate-fade-in { animation: fade-in 1s ease-out forwards; }
+    .animate-slide-in { animation: slide-in 0.5s ease-out forwards; }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+    
+    .hero-gradient {
+      background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 50%, #ede9fe 100%);
+    }
+    
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.5);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .feature-icon {
+      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+    }
+    
+    .scroll-indicator {
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+    .modal-overlay {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
 
-        .header-box h1 {
-            margin: 0;
-            font-family: 'Oswald', sans-serif;
-            font-size: 28px;
-            color: #2a22d3;
-            text-transform: uppercase;
-        }
+    .success-message {
+      animation: slide-in 0.5s ease-out forwards;
+    }
 
-        .logo {
-            width: 50px; /* Scaled down for better fit */
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
+    .input-field {
+      transition: all 0.3s ease;
+    }
 
-        .header-right {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .menu-left {
-            text-decoration: none;
-            color: #333;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-
-        .menu-left:hover {
-            color: #2a22d3;
-        }
-
-        .start-button {
-            background-color: #6ce66a;
-            color: #fff;
-            border-radius: 25px;
-            padding: 10px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-
-        .start-button:hover {
-            background-color: #5cd05a;
-            transform: scale(1.05);
-        }
-
-        /* Main Content */
-        main {
-            margin-top: 150px; 
-            padding: 0 20px 50px;
-            text-align: center;
-        }
-
-        h2 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 32px;
-            max-width: 800px;
-            margin: 0 auto 50px;
-            color: #1a1a1a;
-            border-bottom: 4px solid #6ce66a;
-            padding-bottom: 15px;
-            display: inline-block;
-        }
-
-        /* Info Grid */
-        .container {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            flex-wrap: wrap;
-        }
-
-        .box {
-            background: white;
-            width: 200px;
-            padding: 30px 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: translateY -10px;
-            transition: 0.3s;
-        }
-
-        .box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-
-        .box h3 {
-            margin: 0;
-            font-size: 35px;
-            color: #2a22d3;
-            font-family: 'Oswald', sans-serif;
-        }
-
-        .box p {
-            margin: 10px 0 0;
-            font-size: 18px;
-            color: #666;
-            font-weight: bold;
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 600px) {
-            .header-box { flex-direction: column; gap: 10px; padding: 15px; }
-            main { margin-top: 220px; }
-            h2 { font-size: 24px; }
-        }
-    </style>
-</head>
-<body>
-
-<header>
-    <div class="header-box">
-        <div class="header-left">
-            <img src="StudyLand.png" alt="Logo" class="logo">
-            <h1>StudyLand</h1>
-        </div>
-        <nav class="header-right">
-            <a href="#" class="menu-left">О нас</a>
-            <button class="start-button">Записаться</button>
-        </nav>
+    .input-field:focus {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js"></script>
+ </head>
+ <body class="h-full bg-slate-50 text-slate-800 overflow-x-hidden">
+  <div class="app-wrapper w-full h-full overflow-auto">
+   <!-- Modal Overlay -->
+   <div id="modal-overlay" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4"></div><!-- Profile Panel -->
+   <div id="profile-panel" class="hidden fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl transform transition-transform duration-300 overflow-y-auto">
+    <div class="sticky top-0 bg-gradient-to-r from-emerald-600 to-cyan-600 text-white p-6 flex justify-between items-center">
+     <h2 class="font-display font-bold text-xl">Мой профиль</h2><button onclick="closeProfilePanel()" class="text-white hover:bg-white/20 p-2 rounded-lg transition-colors">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
     </div>
-</header>
-
-<main>
-    <h2>Не можешь сосредоточиться на учебе или не знаешь, с чего начать?</h2>
-
-    <div class="container">
-        <div class="box">
-            <h3>200+</h3>
-            <p>Участников</p>
-        </div>
-        <div class="box">
-            <h3>15+</h3>
-            <p>Преподавателей</p>
-        </div>
-        <div class="box">
-            <h3>5 лет</h3>
-            <p>Опыта работы</p>
-        </div>
+    <div class="p-6">
+     <div id="profile-content"></div>
     </div>
-</main>
+   </div><!-- Success Notification -->
+   <div id="success-notification" class="hidden fixed top-4 right-4 z-50 success-message bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 max-w-md">
+    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+    </svg>
+    <div>
+     <p class="font-semibold" id="notification-title">Успешно!</p>
+     <p class="text-sm text-emerald-100" id="notification-message">Ваши данные отправлены</p>
+    </div><button onclick="hideNotification()" class="ml-4 text-emerald-100 hover:text-white">
+     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+     </svg></button>
+   </div><!-- Navigation -->
+   <nav class="fixed top-0 left-0 right-0 z-50 glass-card">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex items-center justify-between h-16">
+      <div class="flex items-center gap-3">
+       <div class="relative">
+        <div class="w-10 h-10 rounded-xl feature-icon flex items-center justify-center">
+         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+         </svg>
+        </div>
+        <div class="absolute inset-0 rounded-xl feature-icon opacity-30 animate-pulse-ring"></div>
+       </div><span class="font-display font-bold text-xl">BIOSAFE</span>
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+       <a href="#features" class="text-slate-600 hover:text-emerald-600 transition-colors font-medium">Возможности</a> <a href="#stats" class="text-slate-600 hover:text-emerald-600 transition-colors font-medium">Статистика</a> <a href="#team" class="text-slate-600 hover:text-emerald-600 transition-colors font-medium">Команда</a> <button class="text-slate-600 hover:text-emerald-600 transition-colors font-medium" onclick="openProfilePanel()" id="profile-link-header">Профиль</button> <button class="btn-primary text-white px-5 py-2.5 rounded-xl font-semibold" onclick="showSignupModal()">Начать</button>
+      </div><button class="md:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors" onclick="toggleMobileMenu()">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+       </svg></button>
+     </div>
+    </div><!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 pb-4">
+     <div class="px-4 pt-4 space-y-3">
+      <a href="#features" class="block py-2 text-slate-600 hover:text-emerald-600 font-medium">Возможности</a> <a href="#stats" class="block py-2 text-slate-600 hover:text-emerald-600 font-medium">Статистика</a> <a href="#team" class="block py-2 text-slate-600 hover:text-emerald-600 font-medium">Команда</a> <button class="block w-full text-left py-2 text-slate-600 hover:text-emerald-600 font-medium" onclick="openProfilePanel()">Профиль</button> <button class="w-full btn-primary text-white px-5 py-2.5 rounded-xl font-semibold mt-2" onclick="showSignupModal()">Начать бесплатно</button>
+     </div>
+    </div>
+   </nav><!-- Hero Section -->
+   <section class="hero-gradient min-h-screen pt-24 pb-16 relative overflow-hidden">
+    <!-- Background Elements -->
+    <div class="absolute top-20 left-10 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float"></div>
+    <div class="absolute top-40 right-10 w-72 h-72 bg-cyan-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float-delay"></div>
+    <div class="absolute bottom-20 left-1/3 w-72 h-72 bg-violet-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+     <div class="grid lg:grid-cols-2 gap-12 items-center min-h-[calc(100%-6rem)]">
+      <!-- Left Content -->
+      <div class="text-center lg:text-left animate-slide-up">
+       <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 font-medium text-sm mb-6">
+        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span> Медицинские инновации Казахстана
+       </div>
+       <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight" id="hero-title"><span class="gradient-text">Genex</span><br><span class="text-slate-800">BIOSAFE</span></h1>
+       <p class="text-lg sm:text-xl text-slate-600 mb-8 max-w-xl mx-auto lg:mx-0" id="hero-subtitle">Цифровая система хранения и быстрого доступа к медицинской информации для людей с инвалидностью и хроническими заболеваниями</p>
+       <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+        <button class="btn-primary text-white px-8 py-4 rounded-2xl font-semibold text-lg flex items-center justify-center gap-2" onclick="showSignupModal()"> <span id="cta-button-text">Начать бесплатно</span>
+         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+         </svg></button> <button class="px-8 py-4 rounded-2xl font-semibold text-lg border-2 border-slate-300 text-slate-700 hover:border-emerald-500 hover:text-emerald-600 transition-all flex items-center justify-center gap-2" onclick="showVideoModal()">
+         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+         </svg> Смотреть видео </button>
+       </div><!-- Trust Badges -->
+       <div class="mt-12 pt-8 border-t border-slate-200">
+        <p class="text-sm text-slate-500 mb-4">Партнёры и интеграции</p>
+        <div class="flex flex-wrap items-center gap-6 justify-center lg:justify-start opacity-60">
+         <span class="font-semibold text-slate-700">eGov.kz</span> <span class="font-semibold text-slate-700">Damumed</span> <span class="font-semibold text-slate-700">НПО</span>
+        </div>
+       </div>
+      </div><!-- Right Content - Medical Card Preview -->
+      <div class="relative animate-fade-in" style="animation-delay: 0.3s">
+       <div class="relative max-w-md mx-auto">
+        <!-- Main Card -->
+        <div class="glass-card rounded-3xl p-8 shadow-2xl card-hover">
+         <div class="flex items-center gap-4 mb-6">
+          <div class="w-16 h-16 rounded-2xl feature-icon flex items-center justify-center">
+           <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+           </svg>
+          </div>
+          <div>
+           <h3 class="font-display font-bold text-lg">Медицинская карта</h3>
+           <p class="text-slate-500 text-sm">Верифицировано ✓</p>
+          </div>
+         </div>
+         <div class="space-y-4">
+          <div class="flex justify-between items-center py-3 border-b border-slate-100">
+           <span class="text-slate-500">Группа крови</span> <span class="font-semibold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-lg">A+ (II)</span>
+          </div>
+          <div class="flex justify-between items-center py-3 border-b border-slate-100">
+           <span class="text-slate-500">Аллергии</span> <span class="font-semibold text-amber-600 bg-amber-50 px-3 py-1 rounded-lg">Пенициллин</span>
+          </div>
+          <div class="flex justify-between items-center py-3 border-b border-slate-100">
+           <span class="text-slate-500">Заболевания</span> <span class="font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg">Диабет II</span>
+          </div>
+          <div class="flex justify-between items-center py-3">
+           <span class="text-slate-500">Экстр. контакт</span> <span class="font-semibold text-slate-700">+7 777 ***</span>
+          </div>
+         </div>
+         <div class="mt-6 p-4 bg-emerald-50 rounded-2xl flex items-center gap-3">
+          <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center">
+           <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+           </svg>
+          </div>
+          <div>
+           <p class="text-sm font-medium text-emerald-800">QR-код для экстренного доступа</p>
+           <p class="text-xs text-emerald-600">Сканируйте для получения данных</p>
+          </div>
+         </div>
+        </div><!-- Floating Elements -->
+        <div class="absolute -top-4 -right-4 glass-card rounded-2xl p-4 shadow-xl animate-float">
+         <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+           <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+           </svg>
+          </div><span class="font-medium text-sm">Данные защищены</span>
+         </div>
+        </div>
+        <div class="absolute -bottom-4 -left-4 glass-card rounded-2xl p-4 shadow-xl animate-float-delay">
+         <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center">
+           <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+           </svg>
+          </div><span class="font-medium text-sm">Голосовой доступ</span>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Scroll Indicator -->
+     <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 scroll-indicator">
+      <a href="#problem" class="flex flex-col items-center text-slate-400 hover:text-emerald-500 transition-colors"> <span class="text-sm mb-2">Узнать больше</span>
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+       </svg></a>
+     </div>
+    </div>
+   </section><!-- Problem Section -->
+   <section id="problem" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="inline-block px-4 py-2 rounded-full bg-red-100 text-red-700 font-medium text-sm mb-4">Проблема</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold mb-6">Барьеры в доступе к медицине</h2>
+      <p class="text-lg text-slate-600">Исследование AJOG Global Reports показало, что людям с инвалидностью критически не хватает доступной информации о медицинских услугах</p>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="p-6 rounded-2xl bg-gradient-to-br from-red-50 to-orange-50 border border-red-100 card-hover">
+       <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-4">
+        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+       </div>
+       <h3 class="font-semibold text-lg mb-2">Сложная регистрация</h3>
+       <p class="text-slate-600 text-sm">Многоступенчатые процессы регистрации в медицинских сервисах</p>
+      </div>
+      <div class="p-6 rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-100 card-hover">
+       <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-4">
+        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+       </div>
+       <h3 class="font-semibold text-lg mb-2">Зависимость от eGov</h3>
+       <p class="text-slate-600 text-sm">Требование персональных данных и сложных верификаций</p>
+      </div>
+      <div class="p-6 rounded-2xl bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-100 card-hover">
+       <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mb-4">
+        <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+       </div>
+       <h3 class="font-semibold text-lg mb-2">Нет адаптации</h3>
+       <p class="text-slate-600 text-sm">Отсутствие адаптированной информации для людей с инвалидностью</p>
+      </div>
+      <div class="p-6 rounded-2xl bg-gradient-to-br from-yellow-50 to-lime-50 border border-yellow-100 card-hover">
+       <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
+        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+       </div>
+       <h3 class="font-semibold text-lg mb-2">Барьеры в общении</h3>
+       <p class="text-slate-600 text-sm">Сложности коммуникации между пациентом и врачом</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Stats Section -->
+   <section id="stats" class="py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+     <div class="absolute top-0 left-0 w-full h-full" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+     <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="inline-block px-4 py-2 rounded-full bg-emerald-500/20 text-emerald-400 font-medium text-sm mb-4">Статистика</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold mb-6">Люди с инвалидностью в Казахстане</h2>
+      <p class="text-lg text-slate-300">Более 725 тысяч человек нуждаются в доступных медицинских решениях</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="text-center p-8 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 card-hover">
+       <div class="text-5xl sm:text-6xl font-display font-bold gradient-text mb-4" id="stat-people-display">
+        725 000+
+       </div>
+       <p class="text-slate-300 text-lg">Людей с инвалидностью</p>
+       <div class="mt-4 w-full bg-slate-700 rounded-full h-2">
+        <div class="bg-gradient-to-r from-emerald-500 to-cyan-500 h-2 rounded-full" style="width: 100%"></div>
+       </div>
+      </div>
+      <div class="text-center p-8 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 card-hover">
+       <div class="text-5xl sm:text-6xl font-display font-bold text-cyan-400 mb-4" id="stat-working-display">
+        58%
+       </div>
+       <p class="text-slate-300 text-lg">Трудоспособного возраста</p>
+       <div class="mt-4 flex gap-4 justify-center">
+        <div class="text-center">
+         <div class="text-2xl font-bold text-violet-400">
+          26.9%
+         </div>
+         <p class="text-xs text-slate-400">Пенсионеры</p>
+        </div>
+        <div class="text-center">
+         <div class="text-2xl font-bold text-amber-400">
+          15.1%
+         </div>
+         <p class="text-xs text-slate-400">Дети</p>
+        </div>
+       </div>
+      </div>
+      <div class="text-center p-8 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 card-hover">
+       <div class="text-5xl sm:text-6xl font-display font-bold text-emerald-400 mb-4">
+        24/7
+       </div>
+       <p class="text-slate-300 text-lg">Доступ к данным</p>
+       <p class="mt-4 text-sm text-slate-400">Мгновенный доступ в экстренной ситуации без интернета</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Features Section -->
+   <section id="features" class="py-24 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="inline-block px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 font-medium text-sm mb-4">Возможности</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold mb-6">Особенности BIOSAFE</h2>
+      <p class="text-lg text-slate-600">Инновационные решения для доступной медицины</p>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Feature 1 -->
+      <div class="bg-white rounded-3xl p-8 shadow-lg card-hover">
+       <div class="w-14 h-14 feature-icon rounded-2xl flex items-center justify-center mb-6">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Верифицированные данные</h3>
+       <p class="text-slate-600">Все медицинские данные подтверждаются квалифицированными медработниками</p>
+      </div><!-- Feature 2 -->
+      <div class="bg-white rounded-3xl p-8 shadow-lg card-hover">
+       <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mb-6">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Без установки</h3>
+       <p class="text-slate-600">Работает без приложения и сложной регистрации — просто QR-код</p>
+      </div><!-- Feature 3 -->
+      <div class="bg-white rounded-3xl p-8 shadow-lg card-hover">
+       <div class="w-14 h-14 bg-gradient-to-br from-violet-500 to-purple-500 rounded-2xl flex items-center justify-center mb-6">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+        </svg>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Голосовой помощник</h3>
+       <p class="text-slate-600">Озвучивание информации для незрячих пользователей</p>
+      </div><!-- Feature 4 -->
+      <div class="bg-white rounded-3xl p-8 shadow-lg card-hover">
+       <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mb-6">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Крупный текст</h3>
+       <p class="text-slate-600">Адаптивный интерфейс с увеличенными элементами для слабовидящих</p>
+      </div><!-- Feature 5 -->
+      <div class="bg-white rounded-3xl p-8 shadow-lg card-hover">
+       <div class="w-14 h-14 bg-gradient-to-br from-rose-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Экстренный доступ</h3>
+       <p class="text-slate-600">Мгновенное получение критически важной информации в чрезвычайных ситуациях</p>
+      </div><!-- Feature 6 -->
+      <div class="bg-white rounded-3xl p-8 shadow-lg card-hover">
+       <div class="w-14 h-14 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Визуальные подсказки</h3>
+       <p class="text-slate-600">Иконки и цветовая кодировка для быстрого восприятия информации</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Testimonial Section -->
+   <section class="py-24 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-12">
+      <span class="inline-block px-4 py-2 rounded-full bg-cyan-100 text-cyan-700 font-medium text-sm mb-4">Отзыв</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold">Реальная история спасения</h2>
+     </div>
+     <div class="bg-gradient-to-br from-emerald-50 to-cyan-50 rounded-3xl p-8 md:p-12 relative">
+      <svg class="absolute top-6 left-6 w-12 h-12 text-emerald-200" fill="currentColor" viewbox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+      </svg>
+      <blockquote class="text-lg md:text-xl text-slate-700 italic leading-relaxed pl-8 md:pl-12">
+       "Благодаря подобному сервису медицинской карты, врачи скорой помощи смогли мгновенно узнать о моей аллергии на антибиотики и хроническом заболевании. Это буквально спасло мне жизнь, когда я потерял сознание на улице."
+      </blockquote>
+      <div class="mt-8 pl-8 md:pl-12 flex items-center gap-4">
+       <div class="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
+        П
+       </div>
+       <div>
+        <p class="font-semibold text-slate-800">Пользователь World Medical Card</p>
+        <p class="text-sm text-slate-500">Международный аналог</p>
+       </div>
+      </div>
+     </div><!-- International Analogues -->
+     <div class="mt-12 text-center">
+      <p class="text-sm text-slate-500 mb-6">Международные аналоги, подтверждающие эффективность</p>
+      <div class="flex flex-wrap justify-center gap-8 items-center">
+       <div class="px-6 py-3 bg-slate-100 rounded-xl"><span class="font-semibold text-slate-700">World Medical Card</span>
+       </div>
+       <div class="px-6 py-3 bg-slate-100 rounded-xl"><span class="font-semibold text-slate-700">EchoSOS</span>
+       </div>
+       <div class="px-6 py-3 bg-slate-100 rounded-xl"><span class="font-semibold text-slate-700">PulsePoint Respond</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Pricing Section -->
+   <section class="py-24 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="inline-block px-4 py-2 rounded-full bg-violet-100 text-violet-700 font-medium text-sm mb-4">Экономика</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold mb-6">Стоимость разработки MVP</h2>
+      <p class="text-lg text-slate-600">Оптимизированный бюджет по сравнению с аналогичными проектами в Казахстане (800 000 – 1 500 000 ₸)</p>
+     </div>
+     <div class="max-w-2xl mx-auto">
+      <div class="bg-white rounded-3xl p-8 shadow-xl">
+       <div class="space-y-4">
+        <div class="flex justify-between items-center py-4 border-b border-slate-100">
+         <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+           <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+           </svg>
+          </div><span class="font-medium">Frontend разработка</span>
+         </div><span class="font-semibold text-slate-700">250 000 ₸</span>
+        </div>
+        <div class="flex justify-between items-center py-4 border-b border-slate-100">
+         <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
+           <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" />
+           </svg>
+          </div><span class="font-medium">Backend разработка</span>
+         </div><span class="font-semibold text-slate-700">200 000 ₸</span>
+        </div>
+        <div class="flex justify-between items-center py-4 border-b border-slate-100">
+         <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-violet-100 rounded-xl flex items-center justify-center">
+           <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+           </svg>
+          </div><span class="font-medium">Голосовой помощник</span>
+         </div><span class="font-semibold text-slate-700">100 000 ₸</span>
+        </div>
+        <div class="flex justify-between items-center py-4 border-b border-slate-100">
+         <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
+           <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+           </svg>
+          </div><span class="font-medium">Тестирование</span>
+         </div><span class="font-semibold text-slate-700">50 000 ₸</span>
+        </div>
+        <div class="flex justify-between items-center py-4 border-b border-slate-100">
+         <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center">
+           <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+           </svg>
+          </div><span class="font-medium">Непредвиденные расходы</span>
+         </div><span class="font-semibold text-slate-700">30 000 ₸</span>
+        </div>
+       </div>
+       <div class="mt-6 pt-6 border-t-2 border-emerald-500 flex justify-between items-center">
+        <span class="font-display font-bold text-xl">Итого</span> <span class="font-display font-bold text-3xl gradient-text">≈ 630 000 ₸</span>
+       </div>
+       <div class="mt-6 p-4 bg-emerald-50 rounded-2xl flex items-start gap-3">
+        <svg class="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p class="text-sm text-emerald-800"><strong>Экономия до 58%</strong> по сравнению со средней стоимостью аналогичной разработки в Казахстане</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Team Section -->
+   <section id="team" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="inline-block px-4 py-2 rounded-full bg-rose-100 text-rose-700 font-medium text-sm mb-4">Команда</span>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold mb-6">Наша команда</h2>
+      <p class="text-lg text-slate-600">Профессионалы, объединённые общей целью</p>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="text-center group">
+       <div class="relative mb-6 inline-block">
+        <div class="w-32 h-32 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-white text-4xl font-display font-bold mx-auto group-hover:scale-105 transition-transform">
+         К
+        </div>
+        <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-amber-400 rounded-full flex items-center justify-center text-white text-lg">
+         👑
+        </div>
+       </div>
+       <h3 class="font-display font-bold text-lg">Капитан</h3>
+       <p class="text-slate-500">Руководитель проекта</p>
+      </div>
+      <div class="text-center group">
+       <div class="relative mb-6 inline-block">
+        <div class="w-32 h-32 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-4xl font-display font-bold mx-auto group-hover:scale-105 transition-transform">
+         С
+        </div>
+        <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white text-lg">
+         🎤
+        </div>
+       </div>
+       <h3 class="font-display font-bold text-lg">Спикер</h3>
+       <p class="text-slate-500">Презентация и коммуникации</p>
+      </div>
+      <div class="text-center group">
+       <div class="relative mb-6 inline-block">
+        <div class="w-32 h-32 rounded-full bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center text-white text-4xl font-display font-bold mx-auto group-hover:scale-105 transition-transform">
+         Д
+        </div>
+        <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-rose-400 rounded-full flex items-center justify-center text-white text-lg">
+         🎨
+        </div>
+       </div>
+       <h3 class="font-display font-bold text-lg">Дизайнер</h3>
+       <p class="text-slate-500">UX/UI и визуал</p>
+      </div>
+      <div class="text-center group">
+       <div class="relative mb-6 inline-block">
+        <div class="w-32 h-32 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white text-4xl font-display font-bold mx-auto group-hover:scale-105 transition-transform">
+         Р
+        </div>
+        <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-cyan-400 rounded-full flex items-center justify-center text-white text-lg">
+         💻
+        </div>
+       </div>
+       <h3 class="font-display font-bold text-lg">Разработчик</h3>
+       <p class="text-slate-500">Код и техническая часть</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- CTA Section -->
+   <section class="py-24 bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+     <div class="absolute top-0 left-0 w-full h-full" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 30px 30px;"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+     <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Готовы сделать медицину доступной?</h2>
+     <p class="text-lg sm:text-xl text-emerald-100 mb-10 max-w-2xl mx-auto">Присоединяйтесь к проекту BIOSAFE и помогите более 725 000 людей получить быстрый доступ к жизненно важной медицинской информации</p>
+     <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <button class="px-8 py-4 bg-white text-emerald-600 rounded-2xl font-semibold text-lg hover:bg-emerald-50 transition-colors flex items-center justify-center gap-2" onclick="showPartnershipModal()"> <span>Стать партнёром</span>
+       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+       </svg></button> <button class="px-8 py-4 border-2 border-white/50 text-white rounded-2xl font-semibold text-lg hover:bg-white/10 transition-colors" onclick="showContactModal()"> Связаться с нами </button>
+     </div>
+     <div class="mt-12 pt-8 border-t border-white/20 flex flex-wrap justify-center gap-8">
+      <div class="flex items-center gap-2">
+       <svg class="w-5 h-5 text-emerald-200" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+       </svg><span class="text-emerald-100">Физическая карта</span>
+      </div>
+      <div class="flex items-center gap-2">
+       <svg class="w-5 h-5 text-emerald-200" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+       </svg><span class="text-emerald-100">Интеграция с госсистемами</span>
+      </div>
+      <div class="flex items-center gap-2">
+       <svg class="w-5 h-5 text-emerald-200" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+       </svg><span class="text-emerald-100">24/7 поддержка</span>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="bg-slate-900 text-slate-400 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="flex items-center gap-3">
+       <div class="w-10 h-10 rounded-xl feature-icon flex items-center justify-center">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+       </div><span class="font-display font-bold text-xl text-white">Genex BIOSAFE</span>
+      </div>
+      <p class="text-sm">© 2024 Genex BIOSAFE. Все права защищены.</p>
+      <div class="flex gap-4">
+       <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition-colors">
+        <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+        </svg></a> <a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition-colors">
+        <svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+        </svg></a>
+      </div>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      hero_title: 'Genex BIOSAFE',
+      hero_subtitle: 'Цифровая система хранения и быстрого доступа к медицинской информации для людей с инвалидностью и хроническими заболеваниями',
+      cta_button_text: 'Начать бесплатно',
+      contact_email: 'info@biosafe.kz',
+      contact_phone: '+7 (777) 123-45-67',
+      stat_people: '725 000+',
+      stat_working_age: '58%',
+      primary_color: '#10b981',
+      secondary_color: '#06b6d4',
+      text_color: '#1e293b',
+      background_color: '#f8fafc',
+      accent_color: '#8b5cf6',
+      font_family: 'Inter',
+      font_size: 16
+    };
 
-</body>
+    let config = { ...defaultConfig };
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.add('hidden');
+      });
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href !== '#' && document.querySelector(href)) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Modal functions
+    function showModal(title, content, actionText = 'Отправить', onSubmit = null) {
+      const overlay = document.getElementById('modal-overlay');
+      overlay.innerHTML = `
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full animate-slide-in">
+          <div class="px-8 py-6 border-b border-slate-100 flex justify-between items-center">
+            <h3 class="font-display font-bold text-xl">${title}</h3>
+            <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+          <div class="px-8 py-6">
+            ${content}
+          </div>
+          <div class="px-8 py-6 border-t border-slate-100 flex gap-3">
+            <button onclick="closeModal()" class="flex-1 px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-xl font-semibold hover:border-slate-400 transition-colors">
+              Отмена
+            </button>
+            <button onclick="handleSubmit(${onSubmit ? 'true' : 'false'})" class="flex-1 btn-primary text-white px-6 py-3 rounded-xl font-semibold">
+              ${actionText}
+            </button>
+          </div>
+        </div>
+      `;
+      overlay.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.add('hidden');
+    }
+
+    function handleSubmit(hasForm) {
+      if (hasForm) {
+        const email = document.getElementById('email-input')?.value || '';
+        const name = document.getElementById('name-input')?.value || '';
+        const phone = document.getElementById('phone-input')?.value || '';
+        const message = document.getElementById('message-input')?.value || '';
+
+        if (email && name) {
+          showNotification('Спасибо!', `${name}, ваши данные отправлены. Мы свяжемся с вами по адресу ${email}`);
+          closeModal();
+        } else {
+          alert('Пожалуйста, заполните необходимые поля');
+        }
+      } else {
+        showNotification('Спасибо!', 'Ваше сообщение отправлено. Мы ответим вам в ближайшее время');
+        closeModal();
+      }
+    }
+
+    function showNotification(title, message) {
+      const notification = document.getElementById('success-notification');
+      document.getElementById('notification-title').textContent = title;
+      document.getElementById('notification-message').textContent = message;
+      notification.classList.remove('hidden');
+      
+      setTimeout(() => {
+        notification.classList.add('hidden');
+      }, 5000);
+    }
+
+    function hideNotification() {
+      document.getElementById('success-notification').classList.add('hidden');
+    }
+
+    function showSignupModal() {
+      const content = `
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Имя *</label>
+            <input type="text" id="name-input" placeholder="Ваше имя" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Email *</label>
+            <input type="email" id="email-input" placeholder="your@email.com" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Телефон</label>
+            <input type="tel" id="phone-input" placeholder="+7 (777) 123-45-67" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <p class="text-xs text-slate-500 mt-4">Мы используем ваши данные для связи. Ваша информация защищена.</p>
+        </div>
+      `;
+      showModal('Начните прямо сейчас', content, 'Зарегистрироваться', true);
+    }
+
+    function showVideoModal() {
+      const content = `
+        <div class="text-center space-y-4">
+          <div class="w-full aspect-video bg-slate-200 rounded-xl flex items-center justify-center">
+            <svg class="w-16 h-16 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          </div>
+          <p class="text-slate-600">Видео-презентация проекта BIOSAFE (2:45)</p>
+          <p class="text-sm text-slate-500">Демо-версия — видео будет загружено в финальной версии</p>
+        </div>
+      `;
+      showModal('Смотреть видео', content, 'Понял', false);
+    }
+
+    function showContactModal() {
+      const content = `
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Имя *</label>
+            <input type="text" id="name-input" placeholder="Ваше имя" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Email *</label>
+            <input type="email" id="email-input" placeholder="your@email.com" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Сообщение</label>
+            <textarea id="message-input" placeholder="Ваше сообщение..." class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 h-24 resize-none"></textarea>
+          </div>
+        </div>
+      `;
+      showModal('Свяжитесь с нами', content, 'Отправить сообщение', true);
+    }
+
+    function showPartnershipModal() {
+      const content = `
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Название организации *</label>
+            <input type="text" id="name-input" placeholder="Ваша организация" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Email *</label>
+            <input type="email" id="email-input" placeholder="contact@company.com" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Телефон</label>
+            <input type="tel" id="phone-input" placeholder="+7 (777) 123-45-67" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Вид партнёрства</label>
+            <select class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+              <option>Выберите вариант</option>
+              <option>Медицинская организация</option>
+              <option>Технологический партнер</option>
+              <option>Инвестор</option>
+              <option>НПО/Благотворительность</option>
+              <option>Другое</option>
+            </select>
+          </div>
+        </div>
+      `;
+      showModal('Стать партнёром', content, 'Отправить заявку', true);
+    }
+
+    // Initialize Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (newConfig) => {
+          config = newConfig;
+
+          // Update hero title
+          const heroTitle = document.getElementById('hero-title');
+          if (heroTitle && config.hero_title) {
+            const parts = (config.hero_title || defaultConfig.hero_title).split(' ');
+            heroTitle.innerHTML = `<span class="gradient-text">${parts[0] || 'Genex'}</span><br><span class="text-slate-800">${parts.slice(1).join(' ') || 'BIOSAFE'}</span>`;
+          }
+
+          // Update hero subtitle
+          const heroSubtitle = document.getElementById('hero-subtitle');
+          if (heroSubtitle) {
+            heroSubtitle.textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+          }
+
+          // Update CTA button text
+          const ctaButtonText = document.getElementById('cta-button-text');
+          if (ctaButtonText) {
+            ctaButtonText.textContent = config.cta_button_text || defaultConfig.cta_button_text;
+          }
+
+          // Update stats
+          const statPeopleDisplay = document.getElementById('stat-people-display');
+          if (statPeopleDisplay) {
+            statPeopleDisplay.textContent = config.stat_people || defaultConfig.stat_people;
+          }
+
+          const statWorkingDisplay = document.getElementById('stat-working-display');
+          if (statWorkingDisplay) {
+            statWorkingDisplay.textContent = config.stat_working_age || defaultConfig.stat_working_age;
+          }
+
+          // Apply font changes
+          const fontFamily = config.font_family || defaultConfig.font_family;
+          document.body.style.fontFamily = `${fontFamily}, Inter, sans-serif`;
+
+          // Apply font size scaling
+          const fontSize = config.font_size || defaultConfig.font_size;
+          document.documentElement.style.fontSize = `${fontSize}px`;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => window.elementSdk.setConfig({ background_color: value })
+            },
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => window.elementSdk.setConfig({ primary_color: value })
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => window.elementSdk.setConfig({ text_color: value })
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => window.elementSdk.setConfig({ secondary_color: value })
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (value) => window.elementSdk.setConfig({ accent_color: value })
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => window.elementSdk.setConfig({ font_family: value })
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => window.elementSdk.setConfig({ font_size: value })
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['hero_title', config.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+          ['cta_button_text', config.cta_button_text || defaultConfig.cta_button_text],
+          ['contact_email', config.contact_email || defaultConfig.contact_email],
+          ['contact_phone', config.contact_phone || defaultConfig.contact_phone],
+          ['stat_people', config.stat_people || defaultConfig.stat_people],
+          ['stat_working_age', config.stat_working_age || defaultConfig.stat_working_age]
+        ])
+      });
+    }
+
+    // Close modal when clicking overlay
+    document.getElementById('modal-overlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    // Data SDK initialization
+    let currentUser = null;
+    let allUsers = [];
+
+    const dataHandler = {
+      onDataChanged(data) {
+        allUsers = data || [];
+        if (currentUser) {
+          const updated = allUsers.find(u => u.__backendId === currentUser.__backendId);
+          if (updated) {
+            currentUser = updated;
+            renderProfilePanel();
+          }
+        }
+      }
+    };
+
+    async function initializeDataSDK() {
+      if (!window.dataSdk) return;
+      const result = await window.dataSdk.init(dataHandler);
+      if (!result.isOk) {
+        console.error('Failed to initialize Data SDK');
+      }
+    }
+
+    // Initialize SDK on load
+    initializeDataSDK();
+
+    function openProfilePanel() {
+      const profilePanel = document.getElementById('profile-panel');
+      if (currentUser) {
+        renderProfilePanel();
+        profilePanel.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      } else {
+        showNotification('Профиль не найден', 'Пожалуйста, сначала зарегистрируйтесь');
+      }
+    }
+
+    function closeProfilePanel() {
+      document.getElementById('profile-panel').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function renderProfilePanel() {
+      if (!currentUser) return;
+
+      const profileContent = document.getElementById('profile-content');
+      profileContent.innerHTML = `
+        <div class="space-y-6">
+          <div class="flex items-center gap-4 pb-6 border-b border-slate-200">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-white text-2xl font-bold">
+              ${currentUser.name.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <p class="font-display font-bold text-lg">${currentUser.name || 'Пользователь'}</p>
+              <p class="text-slate-500 text-sm">${currentUser.email || ''}</p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="p-4 bg-slate-50 rounded-xl">
+              <p class="text-xs text-slate-500 uppercase font-semibold mb-1">Имя</p>
+              <p class="font-medium text-slate-800">${currentUser.name || 'Не указано'}</p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-xl">
+              <p class="text-xs text-slate-500 uppercase font-semibold mb-1">Email</p>
+              <p class="font-medium text-slate-800">${currentUser.email || 'Не указано'}</p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-xl">
+              <p class="text-xs text-slate-500 uppercase font-semibold mb-1">Телефон</p>
+              <p class="font-medium text-slate-800">${currentUser.phone || 'Не указано'}</p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-xl">
+              <p class="text-xs text-slate-500 uppercase font-semibold mb-1">Группа крови</p>
+              <p class="font-medium text-emerald-600 bg-emerald-50 inline-block px-3 py-1 rounded-lg">${currentUser.blood_type || 'Не указана'}</p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-xl">
+              <p class="text-xs text-slate-500 uppercase font-semibold mb-1">Аллергии</p>
+              <p class="font-medium text-slate-800">${currentUser.allergies || 'Не указаны'}</p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-xl">
+              <p class="text-xs text-slate-500 uppercase font-semibold mb-1">Хронические заболевания</p>
+              <p class="font-medium text-slate-800">${currentUser.chronic_diseases || 'Не указаны'}</p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-xl">
+              <p class="text-xs text-slate-500 uppercase font-semibold mb-1">Контакт для экстренной помощи</p>
+              <p class="font-medium text-slate-800">${currentUser.emergency_contact || 'Не указан'}</p>
+            </div>
+
+            <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+              <div class="flex items-center gap-2 mb-2">
+                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <p class="text-sm font-semibold text-emerald-800">QR-код для скорой помощи</p>
+              </div>
+              <p class="text-xs text-emerald-700">Сканируйте для получения медицинских данных в экстренном случае</p>
+            </div>
+
+            <button onclick="logout()" class="w-full px-4 py-3 bg-red-50 text-red-600 font-semibold rounded-xl hover:bg-red-100 transition-colors border border-red-200">
+              Выход
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function logout() {
+      currentUser = null;
+      closeProfilePanel();
+      showNotification('До свидания!', 'Вы вышли из профиля');
+    }
+
+    // Update signup handler to save data
+    const originalShowSignupModal = showSignupModal;
+    function showSignupModal() {
+      const content = `
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Имя *</label>
+            <input type="text" id="name-input" placeholder="Ваше имя" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Email *</label>
+            <input type="email" id="email-input" placeholder="your@email.com" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Телефон</label>
+            <input type="tel" id="phone-input" placeholder="+7 (777) 123-45-67" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Группа крови</label>
+            <input type="text" id="blood-input" placeholder="A+, B-, O, AB..." class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Аллергии</label>
+            <input type="text" id="allergies-input" placeholder="Например: Пенициллин" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Хронические заболевания</label>
+            <input type="text" id="diseases-input" placeholder="Например: Диабет II типа" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">Контакт для экстренной помощи</label>
+            <input type="tel" id="emergency-input" placeholder="+7 (777) 000-00-00" class="input-field w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500">
+          </div>
+          <p class="text-xs text-slate-500 mt-4">Мы используем ваши данные для связи и в экстренных ситуациях.</p>
+        </div>
+      `;
+      showModal('Начните прямо сейчас', content, 'Зарегистрироваться', 'signup');
+    }
+
+    // Update handleSubmit to support signup
+    const originalHandleSubmit = handleSubmit;
+    async function handleSubmit(type) {
+      if (type === 'signup') {
+        const email = document.getElementById('email-input')?.value || '';
+        const name = document.getElementById('name-input')?.value || '';
+        const phone = document.getElementById('phone-input')?.value || '';
+        const blood = document.getElementById('blood-input')?.value || '';
+        const allergies = document.getElementById('allergies-input')?.value || '';
+        const diseases = document.getElementById('diseases-input')?.value || '';
+        const emergency = document.getElementById('emergency-input')?.value || '';
+
+        if (!email || !name) {
+          showNotification('Ошибка', 'Пожалуйста, заполните имя и email');
+          return;
+        }
+
+        const userData = {
+          name,
+          email,
+          phone,
+          blood_type: blood,
+          allergies,
+          chronic_diseases: diseases,
+          emergency_contact: emergency,
+          user_id: Date.now().toString(),
+          created_at: new Date().toISOString()
+        };
+
+        if (window.dataSdk) {
+          const result = await window.dataSdk.create(userData);
+          if (result.isOk) {
+            currentUser = userData;
+            showNotification('Успешно!', `${name}, ваш профиль создан!`);
+            closeModal();
+          } else {
+            showNotification('Ошибка', 'Не удалось создать профиль');
+          }
+        } else {
+          currentUser = userData;
+          showNotification('Успешно!', `${name}, ваш профиль создан!`);
+          closeModal();
+        }
+      } else if (type === true) {
+        const email = document.getElementById('email-input')?.value || '';
+        const name = document.getElementById('name-input')?.value || '';
+        const phone = document.getElementById('phone-input')?.value || '';
+        const message = document.getElementById('message-input')?.value || '';
+
+        if (email && name) {
+          showNotification('Спасибо!', `${name}, ваши данные отправлены`);
+          closeModal();
+        } else {
+          showNotification('Ошибка', 'Пожалуйста, заполните необходимые поля');
+        }
+      } else {
+        showNotification('Спасибо!', 'Ваше сообщение отправлено');
+        closeModal();
+      }
+    }
+
+    // Update showModal to accept action type
+    const originalShowModal = showModal;
+    function showModal(title, content, actionText = 'Отправить', actionType = null) {
+      const overlay = document.getElementById('modal-overlay');
+      overlay.innerHTML = `
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full animate-slide-in">
+          <div class="px-8 py-6 border-b border-slate-100 flex justify-between items-center">
+            <h3 class="font-display font-bold text-xl">${title}</h3>
+            <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+          <div class="px-8 py-6">
+            ${content}
+          </div>
+          <div class="px-8 py-6 border-t border-slate-100 flex gap-3">
+            <button onclick="closeModal()" class="flex-1 px-6 py-3 border-2 border-slate-300 text-slate-700 rounded-xl font-semibold hover:border-slate-400 transition-colors">
+              Отмена
+            </button>
+            <button onclick="handleSubmit('${actionType}')" class="flex-1 btn-primary text-white px-6 py-3 rounded-xl font-semibold">
+              ${actionText}
+            </button>
+          </div>
+        </div>
+      `;
+      overlay.classList.remove('hidden');
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d51dd18604875c3',t:'MTc3MjMwMjA2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
