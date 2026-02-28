@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>https://GeneX.com</title>
+<style>
+
+    body {
+        margin: 0;
+        font-family: Verdana,sans-serif;
+        background-image: url("https://www.oecd.org/adobe/dynamicmedia/deliver/dm-aid--41f28e9f-8a8f-47b9-b278-68a59c8f8e2a/107182c8-en.jpg?width=1454&preferwebp=true&quality=80");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: #222;
+    }
+    header { background: rgba(195, 226, 241, 0.85); padding: 60px 20px; text-align: center;font-family:Verdana,sans-serif;}
+    h1 { font-size: 80px; }
+    p { font-size: 20px; }
+    section { padding: 60px 20px; max-width: 1000px; margin: auto; }
+    .buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 10px; cursor: pointer; background: #fff; transition: 0.3s; }
+    button:hover { background: #eaeaea; }
+    .card { background: #f2f2f2; border-radius: 12px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); margin-top: 20px; }
+    .container { margin-top: 30px; }
+    input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
+    .hidden { display: none; }
+    footer { background: #222; color: #fff; text-align: center; padding: 30px; }
+    .sos-btn {
+    width: 220px;
+    height: 220px;
+    font-size: 48px;
+    font-weight: bold;
+    border-radius: 50%;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+    transition: 0.3s;
+}
+
+    h3 { color:rgb(1, 0, 0);font-size:29px;}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>GeneX</h1>
+    <div class = "card">
+    <p>Инновационные идеи для помощи особенным людям в Казахстане</p>
+    </div>
+<section>
+    <div class = "card">
+<h3>Голосовой помощник MVP</h3>
+<button id="start">Начать говорить</button>
+<p id="output">Текст речи появится здесь...</p>
+
+<script>
+  // Проверка браузера
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = 'ru-RU'; // русский язык
+
+  const output = document.getElementById('output');
+  const startBtn = document.getElementById('start');
+
+  startBtn.onclick = () => {
+    recognition.start();
+  }
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    output.innerText = "Вы сказали: " + transcript;
+
+    // Голосовой ответ
+    const speech = new SpeechSynthesisUtterance();
+    speech.lang = 'ru-RU';
+    speech.text = "Вы сказали: " + transcript;
+    window.speechSynthesis.speak(speech);
+  }
+
+  recognition.onerror = (event) => {
+    output.innerText = "Ошибка распознавания: " + event.error;
+  }
+</script>
+</div>
+</section>
+
+
+
+
+
+
+</header>
+
+<main>
+<section>
+    <h2 style="text-align:center;">Кем вы являетесь?</h2>
+    <div class="buttons">
+        <button onclick="selectRole('Patient')">Я Пациент</button>
+        <button onclick="selectRole('Doctor')">Я Доктор</button>
+    </div>
+
+    <!-- Patient Form -->
+    <div class="container hidden" id="patientForm">
+        <h2>Данные пациента</h2>
+        <input id="pName" placeholder="Имя">
+        <input id="pContact" placeholder="Контакт">
+        <input id = "pPIN" placeholder="ИИН">
+        <button onclick="window.location.href='page2.html'">Сохранить</button>
+    </div>
+
+    <!-- Patient Card -->
+    <div class="container hidden" id="patientCardScreen">
+        <h2>Ваша информация</h2>
+        <div class="card" id="patientCard"></div>
+    </div>
+
+    <!-- Doctor Form -->
+    <div class="container hidden" id="doctorForm">
+        <h2>Регистрация медика</h2>
+        <input placeholder="Имя">
+        <input placeholder="Фамилия">
+        <input placeholder="Медицинское учреждение">
+        <input placeholder="Email">
+        <input type="password" placeholder="Пароль">
+        <input placeholder="PIN">
+        <a href="page3.html">
+    <button>Войти</button>
+</a>
+
+    </div>
+</section>
+
+<section>
+    <h2>About Us</h2>
+    <div class="card">
+        <p>Мы — команда GeneX. Мы создаём инновационные решения для улучшения здравоохранения в Казахстане.</p>
+    </div>
+</section>
+<section>
+    <div class="card">
+    <h2>Наш сайт:</h2>
+    <p>• Экономит время в экстренных ситуациях</p>
+    <p>• Не требует печати или чтения</p>
+    <p>• Адаптируется под пользователя</p>
+    <p>• Доступно людям с инвалидностью</p>
+    <p>• Простое и понятное даже в панике</p>
+    </div>
+</section>
+
+
+
+
+
+
+<section>
+    <h2>Контакты</h2>
+    <div class="card">
+        <p>Email: aknuramangeldi3@gmail.com</p>
+        <p>Телефон: +7 (775) 364-13-06</p>
+        <p>Казахстан</p>
+    </div>
+</section>
+
+<section style="text-align:center;">
+    
+    <div class="buttons">
+    <a href="tel:103">
+        <button class="sos-btn">SOS</button>
+    </a>
+</div>
+
+</section>
+
+</main>
+
+<footer>
+    © 2026 GeneX
+</footer>
+
+<script>
+function selectRole(role) {
+    document.getElementById("patientForm").classList.add("hidden");
+    document.getElementById("patientCardScreen").classList.add("hidden");
+    document.getElementById("doctorForm").classList.add("hidden");
+
+    if (role === "Patient") document.getElementById("patientForm").classList.remove("hidden");
+    if (role === "Doctor") document.getElementById("doctorForm").classList.remove("hidden");
+}
+
+function showPatientCard() {
+    const name = document.getElementById("pName").value;
+    const blood = document.getElementById("pBlood").value;
+    const allergy = document.getElementById("pAllergy").value;
+    const diagnosis = document.getElementById("pDiagnosis").value;
+    const medicine = document.getElementById("pMedicine").value;
+    const contact = document.getElementById("pContact").value;
+
+    const card = `
+        <p><strong>Имя:</strong> ${name}</p>
+        <p><strong>Группа крови:</strong> ${blood}</p>
+        <p><strong>Аллергии:</strong> ${allergy}</p>
+        <p><strong>Диагноз:</strong> ${diagnosis}</p>
+        <p><strong>Лекарства:</strong> ${medicine}</p>
+        <p><strong>Контакт:</strong> ${contact}</p>
+    `;
+    document.getElementById("patientCard").innerHTML = card;
+
+    document.getElementById("patientForm").classList.add("hidden");
+    document.getElementById("patientCardScreen").classList.remove("hidden");
+}
+</script>
+</body>
+</html>

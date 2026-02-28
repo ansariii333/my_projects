@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GeneX — Медицинский помощник</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  transition: all .3s;
+}
+header, footer {
+  background: #1e88e5;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+.card {
+  background: white;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 12px;
+}
+button, input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  font-size: 16px;
+}
+button {
+  background: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+}
+button.secondary {
+  background: #ccc;
+  color: #000;
+}
+.hidden { display: none; }
+
+.big-text { font-size: 1.3em; }
+.high-contrast {
+  background: black;
+  color: rgb(44, 0, 222);
+}
+.sos {
+  background: red;
+  font-size: 24px;
+  padding: 20px;
+}
+.msg { text-align: center; font-weight: bold; }
+.success { color: green; }
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>GeneX</h1>
+<p>Инновации в медицине Казахстана</p>
+</header>
+
+<div class="card">
+<h3>🎙 Голосовой помощник</h3>
+<button onclick="startVoice()">Начать говорить</button>
+<p id="voiceText">Ожидаю команду...</p>
+</div>
+
+<div class="card">
+<button onclick="toggleText()">👁 Режим слабовидящих</button>
+<button onclick="toggleContrast()">⚫ Высокий контраст</button>
+</div>
+
+<div class="card" id="roleSelect">
+<h3>Кто вы?</h3>
+<button onclick="showForm('patient')">Я пациент</button>
+<button onclick="showForm('doctor')">Я доктор</button>
+</div>
+
+<div class="card hidden" id="patientForm">
+<h3>Данные пациента</h3>
+<input id="pName" placeholder="ФИО">
+<input id="pIIN" placeholder="ИИН (12 цифр)" maxlength="12">
+<input id="pPhone" placeholder="Телефон">
+<button onclick="savePatient()">Сохранить</button>
+<button class="secondary" onclick="back()">Назад</button>
+<p class="msg" id="pMsg"></p>
+</div>
+
+<div class="card hidden" id="doctorForm">
+<h3>Регистрация врача</h3>
+<input id="dName" placeholder="Имя">
+<input id="dSurname" placeholder="Фамилия">
+<input id="dHospital" placeholder="Больница">
+<input id="dEmail" placeholder="Email">
+<input id="dPin" placeholder="PIN (4 цифры)" maxlength="4">
+<button onclick="saveDoctor()">Зарегистрироваться</button>
+<button class="secondary" onclick="back()">Назад</button>
+<p class="msg" id="dMsg"></p>
+</div>
+
+<div class="card" style="text-align:center;">
+<a href="tel:103"><button class="sos">🆘 SOS</button></a>
+</div>
+
+<footer>
+© 2026 GeneX | Казахстан
+</footer>
+
+<script>
+/* UI */
+function showForm(type){
+  roleSelect.classList.add("hidden");
+  patientForm.classList.add("hidden");
+  doctorForm.classList.add("hidden");
+  document.getElementById(type + "Form").classList.remove("hidden");
+}
+function back(){
+  roleSelect.classList.remove("hidden");
+  patientForm.classList.add("hidden");
+  doctorForm.classList.add("hidden");
+}
+function toggleText(){
+  document.body.classList.toggle("big-text");
+}
+function toggleContrast(){
+  document.body.classList.toggle("high-contrast");
+}
+
+/* DATA (localStorage) */
+function savePatient(){
+  const iin = pIIN.value;
+  if(iin.length !== 12 || isNaN(iin)){
+    pMsg.innerText = "ИИН должен содержать 12 цифр";
+    return;
+  }
+  localStorage.setItem("patient", JSON.stringify({
+    name: pName.value,
+    iin: iin,
+    phone: pPhone.value
+  }));
+  pMsg.innerText = "Пациент сохранён";
+  pMsg.className = "msg success";
+}
+
+function saveDoctor(){
+  localStorage.setItem("doctor", JSON.stringify({
+    name: dName.value,
+    surname: dSurname.value,
+    hospital: dHospital.value,
+    email: dEmail.value,
+    pin: dPin.value
+  }));
+  dMsg.innerText = "Доктор зарегистрирован";
+  dMsg.className = "msg success";
+}
+
+/* VOICE */
+function startVoice(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){
+    alert("Голос не поддерживается");
+    return;
+  }
+  const r = new SR();
+  r.lang = "ru-RU";
+  r.start();
+
+  r.onresult = e => {
+    const text = e.results[0][0].transcript.toLowerCase();
+    voiceText.innerText = "Вы сказали: " + text;
+
+    if(text.includes("пациент")) showForm("patient");
+    if(text.includes("доктор")) showForm("doctor");
+    if(text.includes("скорая")) location.href = "tel:103";
+
+    speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+  }
+}
+</script>
+
+</body>
+</html>

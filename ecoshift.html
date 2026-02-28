@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoShift</title>
+    <style>
+        * { box-sizing: border-box; margin:0; padding:0; }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), 
+                        url("https://images.unsplash.com/photo-1522202221444-0a65d9eafc0c") center/cover fixed;
+            color: #222;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            scroll-behavior: smooth;
+        }
+        header {
+            background: rgba(219,236,193,0.95);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        header h1 { font-size: 44px; letter-spacing: 2px; margin-bottom: 10px; }
+        header h2 { font-weight: normal; margin-bottom: 25px; }
+        main { max-width: 900px; width: 100%; }
+        section, .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.7s ease;
+        }
+        section.visible, .card.visible { opacity: 1; transform: translateY(0); }
+        h1 { margin-top:0;font-size:24px; }
+        h3 { text-align:center; font-size:36px; margin-bottom:20px; }
+        p { line-height:1.7; }
+        ul { padding-left:20px; }
+        li { margin-bottom:8px; color:#000; }
+        .buttons { margin-top: 20px; text-align:center; }
+        button {
+            padding: 12px 28px; border: none; border-radius: 25px;
+            background-color: #000; color: #fff; font-size: 16px;
+            cursor: pointer; transition:0.3s; margin: 5px;
+        }
+        button:hover { background-color: #333; }
+        input {
+            width: 100%; padding: 12px; margin-bottom: 15px;
+            border-radius: 10px; border: 1px solid #ccc; font-size: 15px;
+        }
+        .hidden { display: none; }
+        .center { text-align:center; }
+        details summary { cursor:pointer; font-weight:bold; }
+        footer {background: rgba(0, 0, 0, 0.8); /* полупрозрачный черный */
+    color: #fff;
+    text-align: center;
+    padding: 25px 20px;
+    border-radius: 16px;            /* скруглённые углы */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2); /* мягкая тень */
+    margin-top: 40px;
+    max-width: 900px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+        .task {
+            background:#f0fff0; border-left:5px solid #4caf50; padding:15px; margin-bottom:15px;
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>EcoForge</h1>
+    <h2>«Осознай цифровые привычки — сохрани внимание, здоровье и ресурсы»</h2>
+    
+        
+   
+</header>
+
+<main>
+    <div class="card center" id="roles">
+        <button onclick="showVolunteer()">Для волонтёра</button>
+    </div>
+
+    <div class="card hidden" id="volunteer">
+        <h3>Волонтёр</h3>
+        <form onsubmit="submitForm(event)">
+            <input name="fullname" placeholder="ФИО" required>
+            <input name="iin" placeholder="ИИН" maxlength="12" required>
+            <input name="contact" placeholder="Телефон" required>
+            <div class="center">
+                <button type="https://ecoforge.com">Сохранить</button>
+                
+                <button type="button" onclick="back()">Назад</button>
+            </div>
+        </form>
+        <p id="success" class="center hidden" style="color:green;">Данные успешно отправлены!</p>
+    </div>
+
+    <section>
+        <h1>О проекте</h1>
+        <p>Этот сайт посвящён экопросвещению и осознанному использованию цифровых технологий...</p>
+    </section>
+
+    <section>
+        <h1>Видео о цифровом и экологичном образе жизни</h1>
+        <iframe width="100%" height="320" src="https://youtu.be/T70xpfz0-nk" 
+                title="YouTube video" frameborder="0" allowfullscreen></iframe>
+    </section>
+
+    <section>
+        <h1>Задачи и челленджи</h1>
+        <div class="task">
+            <strong>Задание 1:</strong> Подумай, сколько времени ты проводишь в телефоне сегодня. Попробуй сократить экранное время на 30 минут.
+        </div>
+        <div class="task">
+            <strong>Задание 2:</strong> Сделай 10 минут без телефона и запиши ощущения.
+        </div>
+        <div class="task">
+            <strong>Задание 3:</strong> Проверь, сколько мусора ты можешь переработать дома: пластик, бумага, батарейки.
+        </div>
+    </section>
+
+    <section>
+        <h1>Советы и переработка</h1>
+        <details><summary>Органические отходы</summary>Перерабатываются в компост.</details>
+        <details><summary>Пластик</summary>Сдаётся на переработку, экономит ресурсы.</details>
+        <details><summary>Бумага</summary>Старая бумага перерабатывается в новую.</details>
+        <details><summary>Электроника</summary>Старые устройства можно сдавать на переработку.</details>
+        <details><summary>Энергосбережение</summary>Выключай приборы, используй энергосберегающие лампы.</details>
+        <details><summary>Вода</summary>Экономь воду в быту.</details>
+    </section>
+
+</main>
+
+<footer>© 2026 MindForge | Contact: +7 775 616 88 68</footer>
+
+<script>
+    // Показ формы волонтёра
+    function showVolunteer() {
+        document.getElementById('roles').classList.add('hidden');
+        document.getElementById('volunteer').classList.remove('hidden');
+    }
+    function back() {
+        document.getElementById('volunteer').classList.add('hidden');
+        document.getElementById('roles').classList.remove('hidden');
+        document.getElementById('success').classList.add('hidden');
+    }
+    function submitForm(event) {
+        event.preventDefault();
+        document.getElementById('success').classList.remove('hidden');
+        event.target.reset();
+    }
+
+    // Навигация по разделам
+    const sections = document.querySelectorAll('section, .card');
+    let current = 0;
+    function scrollToSection(dir) {
+        current += dir;
+        if(current < 0) current = 0;
+        if(current >= sections.length) current = sections.length - 1;
+        sections[current].scrollIntoView({behavior:'smooth'});
+    }
+
+    // Анимация появления
+    function reveal() {
+        const elems = document.querySelectorAll('section, .card');
+        for(let el of elems) {
+            const top = el.getBoundingClientRect().top;
+            if(top < window.innerHeight - 100) el.classList.add('visible');
+        }
+    }
+    window.addEventListener('scroll', reveal);
+    window.addEventListener('load', reveal);
+</script>
+
+</body>
+</html>
