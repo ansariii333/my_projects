@@ -1,0 +1,31 @@
+import telebot
+import random
+
+bot = telebot.TeleBot("8442666299:AAFE9uElziF5eME7UsvqiAhfXbnFXygqoFY")
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.reply_to(message,
+        "🎮 Welcome to Loot Bot!\n"
+        "Type /daily to get your reward 💰"
+    )
+
+@bot.message_handler(commands=['daily'])
+def daily_reward(message):
+
+    rewards = [
+        "💰 You found 50 coins!",
+        "💰 You found 120 coins!",
+        "💎 JACKPOT! You found a diamond!",
+        "🪙 You found an old coin!",
+        "⚔️ You found a rare sword!",
+        "🍀 Lucky day! Bonus reward!",
+        "📦 You opened a mystery box!",
+        "😢 Nothing... try again tomorrow"
+    ]
+
+    reward = random.choice(rewards)
+
+    bot.reply_to(message, f"🎁 Daily Reward:\n{reward}")
+
+bot.polling()
