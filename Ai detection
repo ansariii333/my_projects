@@ -1,0 +1,44 @@
+from ultralytics import YOLO
+import cv2
+import telebot
+
+bot = telebot.TeleBot("8761885470:AAFVfgSANUtj0rtPw3YtlyEN1aSertWfDHs")
+
+model = YOLO("yolov8n.pt")
+
+
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+
+    bot.reply_to(message,"Welcome! AI bot started.")
+
+
+@bot.message_handler(commands=['ai'])
+def ai(message):
+
+    bot.reply_to(message,"Analyzing image...")
+
+    results = model("load.jpg")
+
+    annotated_frame = results[0].plot()
+
+    cv2.putText(
+        annotated_frame,
+        "SafetyAI",
+        (10, 30),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        1,
+        (255, 0, 0),
+        2
+    )
+
+    cv2.imwrite("result.jpg", annotated_frame)
+
+    photo = open("result.jpg", "rb")
+
+    bot.send_photo(message.chat.id, photo)
+
+
+bot.polling()
+
+
